@@ -5,7 +5,7 @@ API de gestión de tareas y tableros, desarrollada con **Spring Boot** y siguien
 
 ## 🚀 Tecnologías utilizadas
 - **Java 21**
-- **Spring Boot 3**
+- **Spring Boot 4.1.0**
 - **Spring Data JPA**
 - **Hibernate**
 - **Spring Security + JWT**

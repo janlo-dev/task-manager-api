@@ -58,11 +58,11 @@ src/main/java/es/neila/daw/taskmanagerapi/
 ├── application/                         # 2. CAPA DE APLICACIÓN (Orquestación y Casos de Uso)
 │   ├── usecase/                         # PUERTOS DE ENTRADA: Acciones del sistema (ej. CreateTaskUseCase)
 │   ├── dto/                             # Objetos de Transferencia de Datos para el exterior
-│   └── mapper/                          # Conversores para transformar Modelos <-> DTOs
 │
 └── infrastructure/                      # 3. CAPA DE INFRAESTRUCTURA (Detalles tecnológicos)
     ├── controller/                      # ADAPTADORES DE ENTRADA: Controladores REST (API)
     ├── repository/                      # ADAPTADORES DE SALIDA: Implementaciones de BD (JPA, SQL)
+    └── mapper/                          # Conversores para transformar Modelos <-> DTOs
     ├── config/                          # Configuración técnica del framework (Spring Beans, Beans del Dominio)
     └── security/                        # Configuración de seguridad, filtros y manejo de JWT
 ```

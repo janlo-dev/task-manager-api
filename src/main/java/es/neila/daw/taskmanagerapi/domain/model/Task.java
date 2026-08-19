@@ -6,19 +6,30 @@ import java.util.UUID;
 public class Task {
 
     private final UUID id;
-    private String tittle;
+    private String title;
     private String description;
-    private LocalDateTime createAt;
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt ;
     private UUID columnId; // realción con columna( solo por ID, no por objeto)
 
-    public Task(UUID id, String tittle, String description, UUID columnId) {
+    public Task(UUID id, String title, String description, UUID columnId) {
         this.id = id;
-        this.tittle = tittle;
+        this.title = title;
         this.description = description;
-        this.createAt = LocalDateTime.now();
+        this.createdAt = LocalDateTime.now();
         this.updatedAt  = LocalDateTime.now();
         this.columnId = columnId;
+    }
+
+    public Task(UUID id, String title, String description,UUID columnId,
+                LocalDateTime createdAt, LocalDateTime updatedAt) {
+
+        this.id = id;
+        this.title = title;
+        this.description = description;
+        this.columnId = columnId;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
 
@@ -26,7 +37,7 @@ public class Task {
         if(newTitle == null || newTitle.isBlank()){
             throw new IllegalArgumentException("Task title cannot be empty");
         }
-        this.tittle = newTitle;
+        this.title = newTitle;
         this.updatedAt  = LocalDateTime.now();
     }
 
@@ -41,9 +52,9 @@ public class Task {
     }
 
     public UUID getId() {return id;}
-    public String getTittle() {return tittle;}
+    public String getTitle() {return title;}
     public String getDescription() {return description;}
-    public LocalDateTime getCreateAt() {return createAt;}
+    public LocalDateTime getCreatedAt() {return createdAt;}
     public LocalDateTime getUpdatedAt() {return updatedAt;}
     public UUID getColumnId() {return columnId;}
 }

@@ -1,9 +1,11 @@
-package es.neila.daw.taskmanagerapi.application.usecase;
+package es.neila.daw.taskmanagerapi.application.usecase.board;
 
 import es.neila.daw.taskmanagerapi.application.dto.RenameBoardRequest;
 import es.neila.daw.taskmanagerapi.domain.model.Board;
 import es.neila.daw.taskmanagerapi.domain.repository.BoardRepository;
+import org.springframework.stereotype.Component;
 
+//@Component
 public class RenameBoardUseCase {
 
     private final BoardRepository boardRepository;

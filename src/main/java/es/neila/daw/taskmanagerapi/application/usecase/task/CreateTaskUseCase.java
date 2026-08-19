@@ -1,11 +1,13 @@
-package es.neila.daw.taskmanagerapi.application.usecase;
+package es.neila.daw.taskmanagerapi.application.usecase.task;
 
 import es.neila.daw.taskmanagerapi.application.dto.CreateTaskRequest;
 import es.neila.daw.taskmanagerapi.domain.model.Task;
 import es.neila.daw.taskmanagerapi.domain.repository.TaskRepository;
+import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
+@Component
 public class CreateTaskUseCase {
 
     private final TaskRepository taskRepository;

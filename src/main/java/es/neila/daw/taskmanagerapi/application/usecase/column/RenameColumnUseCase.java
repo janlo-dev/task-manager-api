@@ -1,23 +1,28 @@
-package es.neila.daw.taskmanagerapi.application.usecase;
+package es.neila.daw.taskmanagerapi.application.usecase.column;
 
-import es.neila.daw.taskmanagerapi.application.dto.ChangeColumnOrderRequest;
+import es.neila.daw.taskmanagerapi.application.dto.RenameColumnRequest;
 import es.neila.daw.taskmanagerapi.domain.model.Column;
 import es.neila.daw.taskmanagerapi.domain.repository.ColumnRepository;
+import org.springframework.stereotype.Component;
 
-public class ChangeColumnOrderUseCase {
+
+public class RenameColumnUseCase {
 
     private final ColumnRepository columnRepository;
 
-    public ChangeColumnOrderUseCase(ColumnRepository columnRepository) {
+
+    public RenameColumnUseCase(ColumnRepository columnRepository) {
         this.columnRepository = columnRepository;
     }
 
-    public Column execute(ChangeColumnOrderRequest request) {
+    public Column execute(RenameColumnRequest request) {
         Column column = columnRepository.findById(request.columnId())
                 .orElseThrow(() -> new IllegalArgumentException("Column not found"));
 
-        column.changeOrder(request.newOrder());
+        column.rename(request.newName());
 
         return columnRepository.save(column);
     }
+
+
 }

@@ -1,12 +1,16 @@
 package es.neila.daw.taskmanagerapi.infrastructure.repository.jpa;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(name ="Tasks")
+@Getter
+@Setter
 public class TaskEntity {
 
     @Id
@@ -22,9 +26,9 @@ public class TaskEntity {
 
     public TaskEntity() {}
 
-    public TaskEntity(UUID id, String tittle, String description, UUID columnId) {
+    public TaskEntity(UUID id, String title, String description, UUID columnId) {
         this.id = id;
-        this.title = tittle;
+        this.title = title;
         this.description = description;
         this.columnId = columnId;
     }

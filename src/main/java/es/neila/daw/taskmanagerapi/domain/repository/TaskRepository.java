@@ -10,7 +10,6 @@ public interface TaskRepository {
 
     Task save(Task task);
     Optional<Task> findById(UUID id);
-    List<Task> findByColumdId(UUID columId);
+    List<Task> findByColumnId(UUID columnId);
     void delete(UUID id);
-
 }

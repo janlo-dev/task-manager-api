@@ -1,4 +1,4 @@
-package es.neila.daw.taskmanagerapi.application.usecase;
+package es.neila.daw.taskmanagerapi.application.usecase.user;
 
 import es.neila.daw.taskmanagerapi.application.dto.RenameUserRequest;
 import es.neila.daw.taskmanagerapi.domain.model.User;

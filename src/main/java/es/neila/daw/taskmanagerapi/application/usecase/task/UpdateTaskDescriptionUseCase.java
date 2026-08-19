@@ -17,6 +17,8 @@ public class UpdateTaskDescriptionUseCase {
         Task task = taskRepository.findById(request.taskId())
                 .orElseThrow(()-> new IllegalArgumentException("Task not found"));
 
+        task.updateDescription(request.newDescription());
+
         return taskRepository.save(task);
     }
 }

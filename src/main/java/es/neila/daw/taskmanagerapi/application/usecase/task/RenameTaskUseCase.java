@@ -5,7 +5,7 @@ import es.neila.daw.taskmanagerapi.domain.model.Task;
 import es.neila.daw.taskmanagerapi.domain.repository.TaskRepository;
 import org.springframework.stereotype.Component;
 
-@Component
+
 public class RenameTaskUseCase {
 
     private final TaskRepository taskRepository;

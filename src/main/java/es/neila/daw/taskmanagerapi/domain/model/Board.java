@@ -40,7 +40,7 @@ public class Board {
 
     public UUID getId() {return id;}
 
-    public UUID getUserdId() {return userdId;}
+    public UUID getUserId() {return userdId;}
 
     public String getName() {return name;}
 

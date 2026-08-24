@@ -1,0 +1,42 @@
+package es.neila.daw.taskmanagerapi.infrastructure.controller;
+
+import es.neila.daw.taskmanagerapi.application.dto.ChangeUserEmailRequest;
+import es.neila.daw.taskmanagerapi.application.dto.CreateUserRequest;
+import es.neila.daw.taskmanagerapi.application.dto.RenameUserRequest;
+import es.neila.daw.taskmanagerapi.application.usecase.user.ChangeUserEmailUseCase;
+import es.neila.daw.taskmanagerapi.application.usecase.user.CreateUserUseCase;
+import es.neila.daw.taskmanagerapi.application.usecase.user.RenameUserUseCase;
+import es.neila.daw.taskmanagerapi.domain.model.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/users")
+public class UserController {
+
+    private final CreateUserUseCase createUserUseCase;
+    private final RenameUserUseCase renameUserUseCase;
+    private final ChangeUserEmailUseCase changeUserEmailUseCase;
+
+    public UserController(CreateUserUseCase createUserUseCase, RenameUserUseCase renameUserUseCase, ChangeUserEmailUseCase changeUserEmailUseCase) {
+        this.createUserUseCase = createUserUseCase;
+        this.renameUserUseCase = renameUserUseCase;
+        this.changeUserEmailUseCase = changeUserEmailUseCase;
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public User create(@RequestBody CreateUserRequest request) {
+        return createUserUseCase.execute(request);
+    }
+
+    @PutMapping("/rename")
+    public User rename(@RequestBody RenameUserRequest request) {
+        return renameUserUseCase.execute(request);
+    }
+
+    @PutMapping("/email")
+    public User changeEmail(@RequestBody ChangeUserEmailRequest request) {
+        return changeUserEmailUseCase.execute(request);
+    }
+}

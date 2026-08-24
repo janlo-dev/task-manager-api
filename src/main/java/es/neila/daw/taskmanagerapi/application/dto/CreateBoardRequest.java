@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public record CreateBoardRequest(
         String name,
-        int order,
+        int boardOrder,
         UUID userId
 ) {
 }

@@ -3,7 +3,6 @@ package es.neila.daw.taskmanagerapi.application.usecase.board;
 import es.neila.daw.taskmanagerapi.application.dto.CreateBoardRequest;
 import es.neila.daw.taskmanagerapi.domain.model.Board;
 import es.neila.daw.taskmanagerapi.domain.repository.BoardRepository;
-import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
@@ -20,7 +19,7 @@ public class CreateBoardUseCase {
                 UUID.randomUUID(),
                 request.userId(),
                 request.name(),
-                request.order()
+                request.boardOrder()
         );
 
         return boardRepository.save(board);

@@ -19,7 +19,7 @@ public class BoardEntity {
     private UUID id;
 
     @Column(name = "user_id")
-    private UUID userdId;
+    private UUID userId;
 
     private String name;
 
@@ -29,9 +29,9 @@ public class BoardEntity {
     public BoardEntity() {
     }
 
-    public BoardEntity(UUID id, UUID userdId, String name, int boardOrder) {
+    public BoardEntity(UUID id, UUID userId, String name, int boardOrder) {
         this.id = id;
-        this.userdId = userdId;
+        this.userId = userId;
         this.name = name;
         this.boardOrder = boardOrder;
     }

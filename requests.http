@@ -1,0 +1,41 @@
+### 1. Crear usuario
+POST http://localhost:8080/api/users
+Content-Type: application/json
+
+{
+  "name": "Ana",
+  "email": "ana@test.com"
+}
+
+### 2. Crear tablero (sustituye userId por el id devuelto en el paso 1)
+POST http://localhost:8080/api/boards
+Content-Type: application/json
+
+{
+  "name": "Mi tablero",
+  "boardOrder": 0,
+  "userId": "68b9c0e6-1297-4c8d-9277-30f77bc347cd"
+}
+
+### 3. Crear columna (sustituye boardId por el id devuelto en el paso 2)
+POST http://localhost:8080/api/columns
+Content-Type: application/json
+
+{
+  "name": "Pendiente",
+  "columnOrder": 0,
+  "boardId": "1e2f5598-071c-470e-ac48-81cfc8d265b6"
+}
+
+### 4. Crear tarea (sustituye columnId por el id devuelto en el paso 3)
+POST http://localhost:8080/api/tasks
+Content-Type: application/json
+
+{
+  "title": "Primera tarea",
+  "description": "Probar la API",
+  "columnId": "50daeea3-bfb7-438e-bdfb-34e6a80f4b79"
+}
+
+### 5. Listar tareas de esa columna
+GET http://localhost:8080/api/tasks?columnId=50daeea3-bfb7-438e-bdfb-34e6a80f4b79

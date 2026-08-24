@@ -29,7 +29,7 @@ public class Column {
 
     public void changeOrder(int newOrder){
         if(newOrder < 0){
-            throw new IllegalArgumentException("Column order cannot be negative");
+            throw new IllegalArgumentException("Column boardOrder cannot be negative");
         }
         this.columnOrder = newOrder;
     }

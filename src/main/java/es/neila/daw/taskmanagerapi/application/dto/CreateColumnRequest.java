@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public record CreateColumnRequest(
         String name,
-        int order,
+        int columnOrder,
         UUID boardId
 ) {
 }

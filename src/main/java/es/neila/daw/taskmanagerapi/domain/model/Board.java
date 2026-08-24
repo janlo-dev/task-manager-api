@@ -5,21 +5,21 @@ import java.util.UUID;
 public class Board {
 
     private  final UUID id;
-    private  final UUID userdId; //realción con User solo por ID
+    private  final UUID userId; //realción con User solo por ID
     private String name;
     private int boardOrder; // posición del tablero dentro del usuario
 
-    public Board(UUID id, UUID userdId, String name, int boardOrder) {
+    public Board(UUID id, UUID userId, String name, int boardOrder) {
 
         if(name == null || name.isBlank()){
             throw new IllegalArgumentException("Board name cannot be empty");
         }
         if(boardOrder < 0){
-            throw new IllegalArgumentException("Board order cannot be negative");
+            throw new IllegalArgumentException("Board boardOrder cannot be negative");
         }
 
         this.id = id;
-        this.userdId = userdId;
+        this.userId = userId;
         this.name = name;
         this.boardOrder = boardOrder;
     }
@@ -33,14 +33,14 @@ public class Board {
 
     public void changeOrder(int newOrder){
         if(newOrder < 0){
-            throw new IllegalArgumentException("Board order cannot be negative");
+            throw new IllegalArgumentException("Board boardOrder cannot be negative");
         }
         this.boardOrder = newOrder;
     }
 
     public UUID getId() {return id;}
 
-    public UUID getUserId() {return userdId;}
+    public UUID getUserId() {return userId;}
 
     public String getName() {return name;}
 

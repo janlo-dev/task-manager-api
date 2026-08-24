@@ -3,7 +3,6 @@ package es.neila.daw.taskmanagerapi.application.usecase.column;
 import es.neila.daw.taskmanagerapi.application.dto.CreateColumnRequest;
 import es.neila.daw.taskmanagerapi.domain.model.Column;
 import es.neila.daw.taskmanagerapi.domain.repository.ColumnRepository;
-import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
@@ -22,7 +21,7 @@ public class CreateColumnUseCase {
                 request.boardId(),
                 UUID.randomUUID(),
                 request.name(),
-                request.order()
+                request.columnOrder()
         );
 
         return columnRepository.save(column);

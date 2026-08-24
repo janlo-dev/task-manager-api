@@ -19,7 +19,7 @@ public class BoardMapper {
     public Board toDomain(BoardEntity entity) {
         return new Board(
                 entity.getId(),
-                entity.getUserdId(),
+                entity.getUserId(),
                 entity.getName(),
                 entity.getBoardOrder()
         );

@@ -1,14 +1,18 @@
-package es.neila.daw.taskmanagerapi.infrastructure.repository.jpa;
+package es.neila.daw.taskmanagerapi.infrastructure.repository.jpa.board;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "boards")
+@Getter
+@Setter
 public class BoardEntity {
 
     @Id
@@ -18,15 +22,17 @@ public class BoardEntity {
     private UUID userdId;
 
     private String name;
-    private int order;
+
+    @Column(name = "board_order")
+    private int boardOrder;
 
     public BoardEntity() {
     }
 
-    public BoardEntity(UUID id, UUID userdId, String name, int order) {
+    public BoardEntity(UUID id, UUID userdId, String name, int boardOrder) {
         this.id = id;
         this.userdId = userdId;
         this.name = name;
-        this.order = order;
+        this.boardOrder = boardOrder;
     }
 }

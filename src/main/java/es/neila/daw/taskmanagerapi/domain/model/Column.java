@@ -1,15 +1,14 @@
 package es.neila.daw.taskmanagerapi.domain.model;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class Column {
     private  final UUID id;
     private  final UUID boardId; // realción con booard solo por ID
     private String name;
-    private int order; // posición dentro del tablero
+    private int columnOrder; // posición dentro del tablero
 
-    public Column(UUID boardId, UUID id, String name, int order) {
+    public Column(UUID boardId, UUID id, String name, int columnOrder) {
 
         if(name == null || name.isBlank()){
             throw  new IllegalArgumentException("Column name cannot be empty");
@@ -18,7 +17,7 @@ public class Column {
         this.boardId = boardId;
         this.id = id;
         this.name = name;
-        this.order = order;
+        this.columnOrder = columnOrder;
     }
 
     public void rename(String newName){
@@ -32,11 +31,13 @@ public class Column {
         if(newOrder < 0){
             throw new IllegalArgumentException("Column order cannot be negative");
         }
-        this.order = newOrder;
+        this.columnOrder = newOrder;
     }
 
     public UUID getId() {return id;}
     public UUID getBoardId() {return boardId;}
+    public String getName() {return name;}
+    public int getColumnOrder() {return columnOrder;}
     public void setName(String name) {this.name = name;}
-    public void setOrder(int order) {this.order = order;}
+    public void setColumnOrder(int columnOrder) {this.columnOrder = columnOrder;}
 }

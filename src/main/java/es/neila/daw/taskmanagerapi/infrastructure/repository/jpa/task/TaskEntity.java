@@ -1,4 +1,4 @@
-package es.neila.daw.taskmanagerapi.infrastructure.repository.jpa;
+package es.neila.daw.taskmanagerapi.infrastructure.repository.jpa.task;
 
 import jakarta.persistence.*;
 import lombok.Getter;

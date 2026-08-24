@@ -7,21 +7,21 @@ public class Board {
     private  final UUID id;
     private  final UUID userdId; //realción con User solo por ID
     private String name;
-    private int order; // posición del tablero dentro del usuario
+    private int boardOrder; // posición del tablero dentro del usuario
 
-    public Board(UUID id, UUID userdId, String name, int order) {
+    public Board(UUID id, UUID userdId, String name, int boardOrder) {
 
         if(name == null || name.isBlank()){
             throw new IllegalArgumentException("Board name cannot be empty");
         }
-        if(order < 0){
+        if(boardOrder < 0){
             throw new IllegalArgumentException("Board order cannot be negative");
         }
 
         this.id = id;
         this.userdId = userdId;
         this.name = name;
-        this.order = order;
+        this.boardOrder = boardOrder;
     }
 
     public void rename(String newName){
@@ -35,7 +35,7 @@ public class Board {
         if(newOrder < 0){
             throw new IllegalArgumentException("Board order cannot be negative");
         }
-        this.order = newOrder;
+        this.boardOrder = newOrder;
     }
 
     public UUID getId() {return id;}
@@ -44,5 +44,5 @@ public class Board {
 
     public String getName() {return name;}
 
-    public int getOrder() {return order;}
+    public int getBoardOrder() {return boardOrder;}
 }

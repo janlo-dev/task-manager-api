@@ -1,7 +1,7 @@
 package es.neila.daw.taskmanagerapi.infrastructure.mapper;
 
 import es.neila.daw.taskmanagerapi.domain.model.Task;
-import es.neila.daw.taskmanagerapi.infrastructure.repository.jpa.TaskEntity;
+import es.neila.daw.taskmanagerapi.infrastructure.repository.jpa.task.TaskEntity;
 import org.springframework.stereotype.Component;
 
 @Component

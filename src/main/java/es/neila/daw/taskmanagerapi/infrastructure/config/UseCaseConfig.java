@@ -8,7 +8,6 @@ import es.neila.daw.taskmanagerapi.application.usecase.column.CreateColumnUseCas
 import es.neila.daw.taskmanagerapi.application.usecase.column.RenameColumnUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.task.*;
 import es.neila.daw.taskmanagerapi.application.usecase.user.ChangeUserEmailUseCase;
-import es.neila.daw.taskmanagerapi.application.usecase.user.CreateUserUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.user.RenameUserUseCase;
 import es.neila.daw.taskmanagerapi.domain.repository.BoardRepository;
 import es.neila.daw.taskmanagerapi.domain.repository.ColumnRepository;
@@ -86,11 +85,6 @@ public class UseCaseConfig {
     }
 
     // --- User ---
-
-    @Bean
-    public CreateUserUseCase createUserUseCase(UserRepository userRepository) {
-        return new CreateUserUseCase(userRepository);
-    }
 
     @Bean
     public RenameUserUseCase renameUserUseCase(UserRepository userRepository) {

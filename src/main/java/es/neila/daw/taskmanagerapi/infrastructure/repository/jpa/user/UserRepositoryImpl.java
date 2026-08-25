@@ -19,7 +19,6 @@ public class UserRepositoryImpl implements UserRepository {
         this.mapper = mapper;
     }
 
-
     @Override
     public User save(User user) {
         UserEntity entity = mapper.toEntity(user);

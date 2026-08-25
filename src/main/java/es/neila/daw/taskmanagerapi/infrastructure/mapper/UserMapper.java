@@ -11,7 +11,8 @@ public class UserMapper {
         return new UserEntity(
                 user.getId(),
                 user.getName(),
-                user.getEmail()
+                user.getEmail(),
+                user.getPassword()
         );
     }
 
@@ -19,7 +20,8 @@ public class UserMapper {
         return new User(
                 entity.getId(),
                 entity.getName(),
-                entity.getEmail()
+                entity.getEmail(),
+                entity.getPassword()
         );
     }
 }

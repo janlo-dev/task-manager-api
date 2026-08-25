@@ -1,57 +1,86 @@
-### 1. Crear usuario
-POST http://localhost:8080/api/users
+### 1. Registro Usuario
+POST http://localhost:8080/api/auth/register
 Content-Type: application/json
 
 {
-  "name": "Ana",
-  "email": "ana@test.com"
+  "name": "Carlos",
+  "email": "carlos@test.com",
+  "password": "1234abcd"
 }
+
+> {%
+    client.global.set("token", response.body.accessToken);
+    client.global.set("userId", response.body.userId);
+%}
+
+### Login Usuario
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "carlos@test.com",
+  "password": "1234abcd"
+}
+
+> {%
+    client.global.set("token", response.body.accessToken);
+%}
+
+### Petición protegida
+GET http://localhost:8080/api/tasks?columnId=b97d1963-104f-4e3f-92b0-b8ba4a4893bb
+Authorization: Bearer {{token}}
 
 ### 2. Crear tablero (sustituye userId por el id devuelto en el paso 1)
 POST http://localhost:8080/api/boards
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Mi tablero",
   "boardOrder": 0,
-  "userId": "5a14b90f-c340-426d-8f53-8e818085c8e9"
+  "userId": "7124d553-defc-40d1-a372-52770f478916"
 }
 
 ### 3. Crear columna (sustituye boardId por el id devuelto en el paso 2)
 POST http://localhost:8080/api/columns
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "En progreso",
   "columnOrder": 0,
-  "boardId": "d50de4c1-03e6-4d77-90bf-c1430ebc1359"
+  "boardId": "8fbb998a-7890-419a-a897-3bd2f9256ea9"
 }
 
 ### 4. Crear tarea (sustituye columnId por el id devuelto en el paso 3)
 POST http://localhost:8080/api/tasks
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-  "title": "Cuarta tarea",
+  "title": "Primera tarea",
   "description": "Probar la API",
-  "columnId": "b97d1963-104f-4e3f-92b0-b8ba4a4893bb"
+  "columnId": "68406d09-65bf-4e69-807f-107ef7f75705"
 }
 
 ### 5. Listar tareas de esa columna
-GET http://localhost:8080/api/tasks?columnId=c73180c6-e0e5-42eb-b949-9c2ee5e26e0c
+GET http://localhost:8080/api/tasks?columnId=68406d09-65bf-4e69-807f-107ef7f75705
+Authorization: Bearer {{token}}
 
 ### 6. Cambiar descripción de una tarea
 PUT http://localhost:8080/api/tasks/description
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-  "taskId": "5bcdd082-5760-4ea8-b5b3-cb1941b9da00",
+  "taskId": "ac63b240-d55e-422a-a051-297cf031d1c8",
   "newDescription": "Nueva descripción actualizada"
 }
 
 ### 7. Mover tarea a otra columna
 PUT http://localhost:8080/api/tasks/move
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "taskId": "5bcdd082-5760-4ea8-b5b3-cb1941b9da00",
@@ -60,3 +89,4 @@ Content-Type: application/json
 
 ### 8. Borrar una tarea
 DELETE http://localhost:8080/api/tasks/87f4313e-d17e-4933-831d-b2a8b3ff56f9
+Authorization: Bearer {{token}}

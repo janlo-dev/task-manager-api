@@ -19,13 +19,15 @@ public class UserEntity {
 
     private String name;
     private  String email;
+    private String password;
 
     public UserEntity() {
     }
 
-    public UserEntity(UUID id, String name, String email) {
+    public UserEntity(UUID id, String name, String email, String password) {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.password = password;
     }
 }

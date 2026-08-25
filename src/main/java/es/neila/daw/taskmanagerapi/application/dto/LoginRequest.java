@@ -1,7 +1,6 @@
 package es.neila.daw.taskmanagerapi.application.dto;
 
-public record CreateUserRequest(
-        String name,
+public record LoginRequest(
         String email,
         String password
 ) {

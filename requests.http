@@ -14,7 +14,7 @@ Content-Type: application/json
 {
   "name": "Mi tablero",
   "boardOrder": 0,
-  "userId": "68b9c0e6-1297-4c8d-9277-30f77bc347cd"
+  "userId": "5a14b90f-c340-426d-8f53-8e818085c8e9"
 }
 
 ### 3. Crear columna (sustituye boardId por el id devuelto en el paso 2)
@@ -22,9 +22,9 @@ POST http://localhost:8080/api/columns
 Content-Type: application/json
 
 {
-  "name": "Pendiente",
+  "name": "En progreso",
   "columnOrder": 0,
-  "boardId": "1e2f5598-071c-470e-ac48-81cfc8d265b6"
+  "boardId": "d50de4c1-03e6-4d77-90bf-c1430ebc1359"
 }
 
 ### 4. Crear tarea (sustituye columnId por el id devuelto en el paso 3)
@@ -32,10 +32,31 @@ POST http://localhost:8080/api/tasks
 Content-Type: application/json
 
 {
-  "title": "Primera tarea",
+  "title": "Cuarta tarea",
   "description": "Probar la API",
-  "columnId": "50daeea3-bfb7-438e-bdfb-34e6a80f4b79"
+  "columnId": "b97d1963-104f-4e3f-92b0-b8ba4a4893bb"
 }
 
 ### 5. Listar tareas de esa columna
-GET http://localhost:8080/api/tasks?columnId=50daeea3-bfb7-438e-bdfb-34e6a80f4b79
+GET http://localhost:8080/api/tasks?columnId=c73180c6-e0e5-42eb-b949-9c2ee5e26e0c
+
+### 6. Cambiar descripción de una tarea
+PUT http://localhost:8080/api/tasks/description
+Content-Type: application/json
+
+{
+  "taskId": "5bcdd082-5760-4ea8-b5b3-cb1941b9da00",
+  "newDescription": "Nueva descripción actualizada"
+}
+
+### 7. Mover tarea a otra columna
+PUT http://localhost:8080/api/tasks/move
+Content-Type: application/json
+
+{
+  "taskId": "5bcdd082-5760-4ea8-b5b3-cb1941b9da00",
+  "newColumnId": "c73180c6-e0e5-42eb-b949-9c2ee5e26e0c"
+}
+
+### 8. Borrar una tarea
+DELETE http://localhost:8080/api/tasks/87f4313e-d17e-4933-831d-b2a8b3ff56f9

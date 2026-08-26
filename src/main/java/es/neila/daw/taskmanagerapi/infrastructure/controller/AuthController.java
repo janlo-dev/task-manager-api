@@ -32,7 +32,7 @@ public class AuthController {
         User user = new User(UUID.randomUUID(), request.name(), request.email(), hashedPassword);
         userRepository.save(user);
 
-        String accessToken = jwtService.generateToken(user.getEmail());
+        String accessToken = jwtService.generateToken(user.getId());
 
         return new AuthResponse(user.getId(), accessToken);
     }
@@ -46,7 +46,7 @@ public class AuthController {
             throw new IllegalArgumentException("Invalid credentials");
         }
 
-        String accessToken = jwtService.generateToken(user.getEmail());
+        String accessToken = jwtService.generateToken(user.getId());
 
         return new AuthResponse(user.getId(), accessToken);
     }

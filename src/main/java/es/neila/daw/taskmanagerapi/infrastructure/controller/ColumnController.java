@@ -8,7 +8,10 @@ import es.neila.daw.taskmanagerapi.application.usecase.column.CreateColumnUseCas
 import es.neila.daw.taskmanagerapi.application.usecase.column.RenameColumnUseCase;
 import es.neila.daw.taskmanagerapi.domain.model.Column;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/columns")
@@ -26,17 +29,20 @@ public class ColumnController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Column create(@RequestBody CreateColumnRequest request) {
-        return createColumnUseCase.execute(request);
+    public Column create(@RequestBody CreateColumnRequest request, Authentication authentication) {
+        UUID currentUserId = UUID.fromString(authentication.getName());
+        return createColumnUseCase.execute(request, currentUserId);
     }
 
     @PutMapping("/rename")
-    public Column rename(@RequestBody RenameColumnRequest request) {
-        return renameColumnUseCase.execute(request);
+    public Column rename(@RequestBody RenameColumnRequest request, Authentication authentication) {
+        UUID currentUserId = UUID.fromString(authentication.getName());
+        return renameColumnUseCase.execute(request, currentUserId);
     }
 
     @PutMapping("/order")
-    public Column changeOrder(@RequestBody ChangeColumnOrderRequest request) {
-        return changeColumnOrderUseCase.execute(request);
+    public Column changeOrder(@RequestBody ChangeColumnOrderRequest request, Authentication authentication) {
+        UUID currentUserId = UUID.fromString(authentication.getName());
+        return changeColumnOrderUseCase.execute(request, currentUserId);
     }
 }

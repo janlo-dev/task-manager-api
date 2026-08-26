@@ -6,6 +6,8 @@ import es.neila.daw.taskmanagerapi.domain.model.User;
 import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
 import es.neila.daw.taskmanagerapi.domain.repository.UserRepository;
 
+import java.util.UUID;
+
 public class ChangeUserEmailUseCase {
 
     private final UserRepository userRepository;
@@ -16,7 +18,7 @@ public class ChangeUserEmailUseCase {
         this.eventPublisher = eventPublisher;
     }
 
-    public User execute(ChangeUserEmailRequest request) {
+    public User execute(ChangeUserEmailRequest request, UUID performedByUserId) {
         User user = userRepository.findById(request.userId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
@@ -28,7 +30,7 @@ public class ChangeUserEmailUseCase {
                 updateUser.getId(),
                 "USER",
                 "EMAIL_CHANGED",
-                null,
+                performedByUserId,
                 "User email changed to: " + updateUser.getEmail()
         ));
 

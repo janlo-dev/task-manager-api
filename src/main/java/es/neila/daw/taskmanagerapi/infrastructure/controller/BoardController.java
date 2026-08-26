@@ -8,7 +8,10 @@ import es.neila.daw.taskmanagerapi.application.usecase.board.CreateBoardUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.board.RenameBoardUseCase;
 import es.neila.daw.taskmanagerapi.domain.model.Board;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/boards")
@@ -32,12 +35,15 @@ public class BoardController {
     }
 
     @PutMapping("/rename")
-    public Board rename(@RequestBody RenameBoardRequest request) {
-        return renameBoardUseCase.execute(request);
+    public Board rename(@RequestBody RenameBoardRequest request, Authentication authentication) {
+        UUID currentUserId = UUID.fromString(authentication.getName());
+        return renameBoardUseCase.execute(request, currentUserId);
     }
 
     @PutMapping("/order")
-    public Board changeOrder(@RequestBody ChangeBoardOrderRequest request) {
-        return changeBoardOrderUseCase.execute(request);
+    public Board changeOrder(@RequestBody ChangeBoardOrderRequest request, Authentication authentication) {
+        UUID currentUserId = UUID.fromString(authentication.getName());
+
+        return changeBoardOrderUseCase.execute(request, currentUserId);
     }
 }

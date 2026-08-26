@@ -5,7 +5,6 @@ import es.neila.daw.taskmanagerapi.domain.event.AuditDomainEvent;
 import es.neila.daw.taskmanagerapi.domain.model.Task;
 import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
 import es.neila.daw.taskmanagerapi.domain.repository.TaskRepository;
-import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
@@ -20,7 +19,7 @@ public class CreateTaskUseCase {
         this.eventPublisher = eventPublisher;
     }
 
-    public Task execute(CreateTaskRequest request){
+    public Task execute(CreateTaskRequest request,UUID performedByUserId){
         Task task = new Task(
                 UUID.randomUUID(),
                 request.title(),
@@ -34,7 +33,7 @@ public class CreateTaskUseCase {
                 savedTask.getId(),
                 "TASK",
                 "CREATED",
-                null,
+                performedByUserId,
                 "Task created with title: " + savedTask.getTitle()
         ));
 

@@ -19,7 +19,7 @@ public class MoveTaskUseCase {
         this.eventPublisher = eventPublisher;
     }
 
-    public Task execute(MoveTaskRequest request){
+    public Task execute(MoveTaskRequest request, UUID performedByUserId){
 
         Task task = taskRepository.findById(request.taskId())
                 .orElseThrow(()-> new IllegalArgumentException("Task not found"));
@@ -28,13 +28,11 @@ public class MoveTaskUseCase {
         task.moveToColumn(request.newColumnId());
         Task updatedTask = taskRepository.save(task);
 
-        // Disparamos el evento para la auditoría (Event-Driven)
-        // Disparar la auditoría en 1 línea sin alterar tus DTOs
         eventPublisher.publish(new AuditDomainEvent(
                 updatedTask.getId(),
                 "TASK",
                 "MOVED",
-                null, // O el ID del usuario si en el futuro lo extraes en la capa de aplicación
+                performedByUserId,
                 "Task moved to column " + request.newColumnId()
         ));
 

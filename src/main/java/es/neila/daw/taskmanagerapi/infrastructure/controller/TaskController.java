@@ -7,6 +7,7 @@ import es.neila.daw.taskmanagerapi.application.dto.UpdateTaskDescriptionRequest;
 import es.neila.daw.taskmanagerapi.application.usecase.task.*;
 import es.neila.daw.taskmanagerapi.domain.model.Task;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,8 +35,9 @@ public class TaskController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Task create(@RequestBody CreateTaskRequest request) {
-        return createTaskUseCase.execute(request);
+    public Task create(@RequestBody CreateTaskRequest request, Authentication authentication) {
+        UUID currentUserId = UUID.fromString(authentication.getName());
+        return createTaskUseCase.execute(request, currentUserId);
     }
 
     @GetMapping
@@ -44,23 +46,27 @@ public class TaskController {
     }
 
     @PutMapping("/rename")
-    public Task rename(@RequestBody RenameTaskRequest request) {
-        return renameTaskUseCase.execute(request);
+    public Task rename(@RequestBody RenameTaskRequest request, Authentication authentication) {
+        UUID currentUserId = UUID.fromString(authentication.getName());
+        return renameTaskUseCase.execute(request, currentUserId);
     }
 
     @PutMapping("/description")
-    public Task updateDescription(@RequestBody UpdateTaskDescriptionRequest request) {
-        return updateTaskDescriptionUseCase.execute(request);
+    public Task updateDescription(@RequestBody UpdateTaskDescriptionRequest request, Authentication authentication) {
+        UUID currentUserId = UUID.fromString(authentication.getName());
+        return updateTaskDescriptionUseCase.execute(request, currentUserId);
     }
 
     @PutMapping("/move")
-    public Task move(@RequestBody MoveTaskRequest request) {
-        return moveTaskUseCase.execute(request);
+    public Task move(@RequestBody MoveTaskRequest request, Authentication authentication) {
+        UUID currentUserId = UUID.fromString(authentication.getName());
+        return moveTaskUseCase.execute(request, currentUserId);
     }
 
     @DeleteMapping("/{taskId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable UUID taskId) {
-        deleteTaskUseCase.execute(taskId);
+    public void delete(@PathVariable UUID taskId, Authentication authentication) {
+        UUID currentUserId = UUID.fromString(authentication.getName());
+        deleteTaskUseCase.execute(taskId, currentUserId);
     }
 }

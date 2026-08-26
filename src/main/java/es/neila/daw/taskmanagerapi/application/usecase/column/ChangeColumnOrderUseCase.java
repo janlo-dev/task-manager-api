@@ -5,7 +5,8 @@ import es.neila.daw.taskmanagerapi.domain.event.AuditDomainEvent;
 import es.neila.daw.taskmanagerapi.domain.model.Column;
 import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
 import es.neila.daw.taskmanagerapi.domain.repository.ColumnRepository;
-import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 
 public class ChangeColumnOrderUseCase {
@@ -18,7 +19,7 @@ public class ChangeColumnOrderUseCase {
         this.eventPublisher = eventPublisher;
     }
 
-    public Column execute(ChangeColumnOrderRequest request) {
+    public Column execute(ChangeColumnOrderRequest request, UUID performedByUserId) {
         Column column = columnRepository.findById(request.columnId())
                 .orElseThrow(() -> new IllegalArgumentException("Column not found"));
 
@@ -30,7 +31,7 @@ public class ChangeColumnOrderUseCase {
                 updateColumn.getId(),
                 "COLUMN",
                 "REORDERED",
-                null,
+                performedByUserId,
                 "Column order change to: " + updateColumn.getColumnOrder()
         ));
 

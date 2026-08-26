@@ -5,7 +5,8 @@ import es.neila.daw.taskmanagerapi.domain.event.AuditDomainEvent;
 import es.neila.daw.taskmanagerapi.domain.model.Board;
 import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
 import es.neila.daw.taskmanagerapi.domain.repository.BoardRepository;
-import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 
 public class ChangeBoardOrderUseCase {
@@ -18,7 +19,7 @@ public class ChangeBoardOrderUseCase {
         this.eventPublisher = eventPublisher;
     }
 
-    public Board execute(ChangeBoardOrderRequest request) {
+    public Board execute(ChangeBoardOrderRequest request, UUID performedByUserId) {
         Board board = boardRepository.findById(request.boardId())
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
@@ -30,7 +31,7 @@ public class ChangeBoardOrderUseCase {
                 updateBoard.getId(),
                 "BOARD",
                 "REORDERED",
-                null,
+                performedByUserId,
                 "Board order changed to: " + updateBoard.getBoardOrder()
         ));
 

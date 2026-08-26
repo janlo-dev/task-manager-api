@@ -5,7 +5,8 @@ import es.neila.daw.taskmanagerapi.domain.event.AuditDomainEvent;
 import es.neila.daw.taskmanagerapi.domain.model.Task;
 import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
 import es.neila.daw.taskmanagerapi.domain.repository.TaskRepository;
-import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 
 public class RenameTaskUseCase {
@@ -18,7 +19,7 @@ public class RenameTaskUseCase {
         this.eventPublisher = eventPublisher;
     }
 
-    public Task execute(RenameTaskRequest request){
+    public Task execute(RenameTaskRequest request, UUID performedByUserId){
         Task task = taskRepository.findById(request.taskId())
                 .orElseThrow(()-> new IllegalArgumentException("Task not found"));
         task.rename(request.newTitle());
@@ -29,7 +30,7 @@ public class RenameTaskUseCase {
                 renameTask.getId(),
                 "TASK",
                 "UPDATE",
-                null,
+                performedByUserId,
                 "Task UPDATE with NAME: " + renameTask.getTitle()
         ));
 

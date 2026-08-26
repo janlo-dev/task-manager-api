@@ -6,6 +6,8 @@ import es.neila.daw.taskmanagerapi.domain.model.Task;
 import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
 import es.neila.daw.taskmanagerapi.domain.repository.TaskRepository;
 
+import java.util.UUID;
+
 public class UpdateTaskDescriptionUseCase {
 
     private final TaskRepository taskRepository;
@@ -16,7 +18,7 @@ public class UpdateTaskDescriptionUseCase {
         this.eventPublisher = eventPublisher;
     }
 
-    public Task execute(UpdateTaskDescriptionRequest request){
+    public Task execute(UpdateTaskDescriptionRequest request, UUID performedByUserId){
 
         Task task = taskRepository.findById(request.taskId())
                 .orElseThrow(()-> new IllegalArgumentException("Task not found"));
@@ -29,7 +31,7 @@ public class UpdateTaskDescriptionUseCase {
                 updateTask.getId(),
                 "TASK",
                 "UPDATE",
-                null,
+                performedByUserId,
                 "Task update with description: " + updateTask.getDescription()
         ));
         return updateTask;

@@ -3,7 +3,6 @@ package es.neila.daw.taskmanagerapi.application.usecase.task;
 import es.neila.daw.taskmanagerapi.domain.event.AuditDomainEvent;
 import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
 import es.neila.daw.taskmanagerapi.domain.repository.TaskRepository;
-import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
@@ -18,7 +17,7 @@ public class DeleteTaskUseCase {
         this.eventPublisher = eventPublisher;
     }
 
-    public void execute(UUID taskId) {
+    public void execute(UUID taskId, UUID performedByUserId) {
         if (taskRepository.findById(taskId).isEmpty()) {
             throw new IllegalArgumentException("La tarea con ID " + taskId + " no existe");
         }
@@ -28,7 +27,7 @@ public class DeleteTaskUseCase {
                 taskId,
                 "TASK",
                 "DELETED",
-                null,
+                performedByUserId,
                 "Task deleted successfully"
         ));
     }

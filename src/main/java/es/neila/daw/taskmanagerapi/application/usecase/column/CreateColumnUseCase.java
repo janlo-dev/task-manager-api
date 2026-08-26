@@ -2,7 +2,6 @@ package es.neila.daw.taskmanagerapi.application.usecase.column;
 
 import es.neila.daw.taskmanagerapi.application.dto.CreateColumnRequest;
 import es.neila.daw.taskmanagerapi.domain.event.AuditDomainEvent;
-import es.neila.daw.taskmanagerapi.domain.model.Board;
 import es.neila.daw.taskmanagerapi.domain.model.Column;
 import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
 import es.neila.daw.taskmanagerapi.domain.repository.ColumnRepository;
@@ -21,7 +20,7 @@ public class CreateColumnUseCase {
     }
 
 
-    public Column execute(CreateColumnRequest request) {
+    public Column execute(CreateColumnRequest request, UUID performedByUserId) {
         Column column = new Column(
                 request.boardId(),
                 UUID.randomUUID(),
@@ -35,7 +34,7 @@ public class CreateColumnUseCase {
                 saveColumn.getId(),
                 "COLUMN",
                 "CREATED",
-                null,
+                performedByUserId,
                 "Column created with name: " + saveColumn.getName()
         ));
 

@@ -2,7 +2,6 @@ package es.neila.daw.taskmanagerapi.application.usecase.task;
 
 import es.neila.daw.taskmanagerapi.domain.model.Task;
 import es.neila.daw.taskmanagerapi.domain.repository.TaskRepository;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.UUID;

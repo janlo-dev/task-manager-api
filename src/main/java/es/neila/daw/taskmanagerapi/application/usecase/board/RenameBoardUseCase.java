@@ -5,7 +5,8 @@ import es.neila.daw.taskmanagerapi.domain.event.AuditDomainEvent;
 import es.neila.daw.taskmanagerapi.domain.model.Board;
 import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
 import es.neila.daw.taskmanagerapi.domain.repository.BoardRepository;
-import org.springframework.stereotype.Component;
+
+import java.util.UUID;
 
 
 public class RenameBoardUseCase {
@@ -18,7 +19,7 @@ public class RenameBoardUseCase {
         this.eventPublisher = eventPublisher;
     }
 
-    public Board execute(RenameBoardRequest request) {
+    public Board execute(RenameBoardRequest request, UUID performedByUserId) {
         Board board = boardRepository.findById(request.boardId())
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
@@ -30,7 +31,7 @@ public class RenameBoardUseCase {
                 savedBoard.getId(),
                 "BOARD",
                 "RENAMED",
-                null,
+                performedByUserId,
                 "Board update with name: " + savedBoard.getName()
         ));
 

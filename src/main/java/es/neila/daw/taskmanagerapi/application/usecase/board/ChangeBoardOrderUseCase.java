@@ -1,7 +1,9 @@
 package es.neila.daw.taskmanagerapi.application.usecase.board;
 
 import es.neila.daw.taskmanagerapi.application.dto.ChangeBoardOrderRequest;
+import es.neila.daw.taskmanagerapi.domain.event.AuditDomainEvent;
 import es.neila.daw.taskmanagerapi.domain.model.Board;
+import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
 import es.neila.daw.taskmanagerapi.domain.repository.BoardRepository;
 import org.springframework.stereotype.Component;
 
@@ -9,9 +11,11 @@ import org.springframework.stereotype.Component;
 public class ChangeBoardOrderUseCase {
 
     private final BoardRepository boardRepository;
+    private final DomainEventPublisher eventPublisher;
 
-    public ChangeBoardOrderUseCase(BoardRepository boardRepository) {
+    public ChangeBoardOrderUseCase(BoardRepository boardRepository, DomainEventPublisher eventPublisher) {
         this.boardRepository = boardRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     public Board execute(ChangeBoardOrderRequest request) {
@@ -20,6 +24,16 @@ public class ChangeBoardOrderUseCase {
 
         board.changeOrder(request.newOrder());
 
-        return boardRepository.save(board);
+        Board updateBoard = boardRepository.save(board);
+
+        eventPublisher.publish(new AuditDomainEvent(
+                updateBoard.getId(),
+                "BOARD",
+                "REORDERED",
+                null,
+                "Board order changed to: " + updateBoard.getBoardOrder()
+        ));
+
+        return updateBoard;
     }
 }

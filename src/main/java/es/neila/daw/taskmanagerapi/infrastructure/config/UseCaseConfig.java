@@ -15,6 +15,7 @@ import es.neila.daw.taskmanagerapi.domain.repository.TaskRepository;
 import es.neila.daw.taskmanagerapi.domain.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
 
 @Configuration
 public class UseCaseConfig {
@@ -22,18 +23,18 @@ public class UseCaseConfig {
     // --- Task ---
 
     @Bean
-    public CreateTaskUseCase createTaskUseCase(TaskRepository taskRepository) {
-        return new CreateTaskUseCase(taskRepository);
+    public CreateTaskUseCase createTaskUseCase(TaskRepository taskRepository, DomainEventPublisher eventPublisher) {
+        return new CreateTaskUseCase(taskRepository, eventPublisher);
     }
 
     @Bean
-    public MoveTaskUseCase moveTaskUseCase(TaskRepository taskRepository) {
-        return new MoveTaskUseCase(taskRepository);
+    public MoveTaskUseCase moveTaskUseCase(TaskRepository taskRepository, DomainEventPublisher eventPublisher) {
+        return new MoveTaskUseCase(taskRepository, eventPublisher);
     }
 
     @Bean
-    public DeleteTaskUseCase deleteTaskUseCase(TaskRepository taskRepository) {
-        return new DeleteTaskUseCase(taskRepository);
+    public DeleteTaskUseCase deleteTaskUseCase(TaskRepository taskRepository, DomainEventPublisher eventPublisher) {
+        return new DeleteTaskUseCase(taskRepository, eventPublisher);
     }
 
     @Bean
@@ -42,58 +43,57 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public RenameTaskUseCase renameTaskUseCase(TaskRepository taskRepository) {
-        return new RenameTaskUseCase(taskRepository);
+    public RenameTaskUseCase renameTaskUseCase(TaskRepository taskRepository, DomainEventPublisher eventPublisher) {
+        return new RenameTaskUseCase(taskRepository, eventPublisher);
     }
 
     @Bean
-    public UpdateTaskDescriptionUseCase updateTaskDescriptionUseCase(TaskRepository taskRepository) {
-        return new UpdateTaskDescriptionUseCase(taskRepository);
+    public UpdateTaskDescriptionUseCase updateTaskDescriptionUseCase(TaskRepository taskRepository, DomainEventPublisher eventPublisher) {
+        return new UpdateTaskDescriptionUseCase(taskRepository, eventPublisher);
     }
 
     // --- Board ---
 
     @Bean
-    public CreateBoardUseCase createBoardUseCase(BoardRepository boardRepository) {
-        return new CreateBoardUseCase(boardRepository);
+    public CreateBoardUseCase createBoardUseCase(BoardRepository boardRepository, DomainEventPublisher eventPublisher) {
+        return new CreateBoardUseCase(boardRepository, eventPublisher);
     }
 
     @Bean
-    public RenameBoardUseCase renameBoardUseCase(BoardRepository boardRepository) {
-        return new RenameBoardUseCase(boardRepository);
+    public RenameBoardUseCase renameBoardUseCase(BoardRepository boardRepository, DomainEventPublisher eventPublisher) {
+        return new RenameBoardUseCase(boardRepository, eventPublisher);
     }
 
     @Bean
-    public ChangeBoardOrderUseCase changeBoardOrderUseCase(BoardRepository boardRepository) {
-        return new ChangeBoardOrderUseCase(boardRepository);
+    public ChangeBoardOrderUseCase changeBoardOrderUseCase(BoardRepository boardRepository, DomainEventPublisher eventPublisher) {
+        return new ChangeBoardOrderUseCase(boardRepository, eventPublisher);
     }
 
     // --- Column ---
     @Bean
-    public CreateColumnUseCase createColumnUseCase(ColumnRepository columnRepository) {
-        return new CreateColumnUseCase(columnRepository);
+    public CreateColumnUseCase createColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher) {
+        return new CreateColumnUseCase(columnRepository, eventPublisher);
     }
 
     @Bean
-    public RenameColumnUseCase renameColumnUseCase(ColumnRepository columnRepository) {
-        return new RenameColumnUseCase(columnRepository);
+    public RenameColumnUseCase renameColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher) {
+        return new RenameColumnUseCase(columnRepository, eventPublisher);
     }
 
     @Bean
-    public ChangeColumnOrderUseCase changeColumnOrderUseCase(ColumnRepository columnRepository) {
-        return new ChangeColumnOrderUseCase(columnRepository);
+    public ChangeColumnOrderUseCase changeColumnOrderUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher) {
+        return new ChangeColumnOrderUseCase(columnRepository, eventPublisher);
     }
 
     // --- User ---
 
     @Bean
-    public RenameUserUseCase renameUserUseCase(UserRepository userRepository) {
-        return new RenameUserUseCase(userRepository);
+    public RenameUserUseCase renameUserUseCase(UserRepository userRepository, DomainEventPublisher eventPublisher) {
+        return new RenameUserUseCase(userRepository, eventPublisher);
     }
 
     @Bean
-    public ChangeUserEmailUseCase changeUserEmailUseCase(UserRepository userRepository) {
-        return new ChangeUserEmailUseCase(userRepository);
+    public ChangeUserEmailUseCase changeUserEmailUseCase(UserRepository userRepository, DomainEventPublisher eventPublisher) {
+        return new ChangeUserEmailUseCase(userRepository, eventPublisher);
     }
-
 }

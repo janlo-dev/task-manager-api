@@ -38,6 +38,18 @@ public class Board {
         this.boardOrder = newOrder;
     }
 
+    public void verifyCanManage(UUID requesterId) {
+        if (!this.userId.equals(requesterId)) {
+            throw new IllegalArgumentException("Only the board owner can perform this action");
+        }
+    }
+
+    public void verifyCanEditContent(UUID requesterId) {
+        if (!this.userId.equals(requesterId)) {
+            throw new IllegalArgumentException("You don't have access to this board");
+        }
+    }
+
     public UUID getId() {return id;}
 
     public UUID getUserId() {return userId;}

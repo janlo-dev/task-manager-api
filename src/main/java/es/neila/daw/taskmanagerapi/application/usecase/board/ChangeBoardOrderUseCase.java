@@ -24,6 +24,7 @@ public class ChangeBoardOrderUseCase {
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
         board.changeOrder(request.newOrder());
+        board.verifyCanManage(performedByUserId);
 
         Board updateBoard = boardRepository.save(board);
 

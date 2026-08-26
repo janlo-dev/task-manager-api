@@ -1,6 +1,5 @@
 package es.neila.daw.taskmanagerapi.application.usecase.board;
 
-import es.neila.daw.taskmanagerapi.application.dto.RenameBoardRequest;
 import es.neila.daw.taskmanagerapi.domain.event.AuditDomainEvent;
 import es.neila.daw.taskmanagerapi.domain.model.Board;
 import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
@@ -8,34 +7,30 @@ import es.neila.daw.taskmanagerapi.domain.repository.BoardRepository;
 
 import java.util.UUID;
 
-
-public class RenameBoardUseCase {
+public class DeleteBoardUseCase {
 
     private final BoardRepository boardRepository;
     private final DomainEventPublisher eventPublisher;
 
-    public RenameBoardUseCase(BoardRepository boardRepository, DomainEventPublisher eventPublisher) {
+    public DeleteBoardUseCase(BoardRepository boardRepository, DomainEventPublisher eventPublisher) {
         this.boardRepository = boardRepository;
         this.eventPublisher = eventPublisher;
     }
 
-    public Board execute(RenameBoardRequest request, UUID performedByUserId) {
-        Board board = boardRepository.findById(request.boardId())
+    public void execute(UUID boardId, UUID performedByUserId) {
+        Board board = boardRepository.findById(boardId)
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
-        board.rename(request.newName());
         board.verifyCanManage(performedByUserId);
 
-        Board savedBoard =  boardRepository.save(board);
+        boardRepository.delete(boardId);
 
         eventPublisher.publish(new AuditDomainEvent(
-                savedBoard.getId(),
+                boardId,
                 "BOARD",
-                "RENAMED",
+                "DELETED",
                 performedByUserId,
-                "Board update with name: " + savedBoard.getName()
+                "Board deleted: " + board.getName()
         ));
-
-        return savedBoard;
     }
 }

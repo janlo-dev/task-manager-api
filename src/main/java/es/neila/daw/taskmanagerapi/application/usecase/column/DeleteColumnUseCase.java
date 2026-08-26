@@ -1,6 +1,5 @@
 package es.neila.daw.taskmanagerapi.application.usecase.column;
 
-import es.neila.daw.taskmanagerapi.application.dto.CreateColumnRequest;
 import es.neila.daw.taskmanagerapi.domain.event.AuditDomainEvent;
 import es.neila.daw.taskmanagerapi.domain.model.Board;
 import es.neila.daw.taskmanagerapi.domain.model.Column;
@@ -10,44 +9,36 @@ import es.neila.daw.taskmanagerapi.domain.repository.ColumnRepository;
 
 import java.util.UUID;
 
-
-public class CreateColumnUseCase {
+public class DeleteColumnUseCase {
 
     private final ColumnRepository columnRepository;
     private final DomainEventPublisher eventPublisher;
     private final BoardRepository boardRepository;
 
-    public CreateColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardRepository boardRepository){
+    public DeleteColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardRepository boardRepository) {
         this.columnRepository = columnRepository;
         this.eventPublisher = eventPublisher;
         this.boardRepository = boardRepository;
     }
 
+    public void execute(UUID columnId, UUID performedByUserId) {
 
-    public Column execute(CreateColumnRequest request, UUID performedByUserId) {
+        Column column = columnRepository.findById(columnId)
+                .orElseThrow(() -> new IllegalArgumentException("Column not found"));
 
-        Board board = boardRepository.findById(request.boardId())
+        Board board = boardRepository.findById(column.getBoardId())
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
         board.verifyCanEditContent(performedByUserId);
 
-        Column column = new Column(
-                request.boardId(),
-                UUID.randomUUID(),
-                request.name(),
-                request.columnOrder()
-        );
-
-        Column saveColumn =  columnRepository.save(column);
+        columnRepository.delete(columnId);
 
         eventPublisher.publish(new AuditDomainEvent(
-                saveColumn.getId(),
+                columnId,
                 "COLUMN",
-                "CREATED",
+                "DELETED",
                 performedByUserId,
-                "Column created with name: " + saveColumn.getName()
+                "Column deleted: " + column.getName()
         ));
-
-        return saveColumn;
     }
 }

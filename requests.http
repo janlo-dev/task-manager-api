@@ -3,8 +3,8 @@ POST http://localhost:8080/api/auth/register
 Content-Type: application/json
 
 {
-  "name": "Carlos",
-  "email": "carlos@test.com",
+  "name": "Ana",
+  "email": "ana@test.com",
   "password": "1234abcd"
 }
 
@@ -38,7 +38,7 @@ Authorization: Bearer {{token}}
 {
   "name": "Mi tablero",
   "boardOrder": 0,
-  "userId": "7124d553-defc-40d1-a372-52770f478916"
+  "userId": "84e15e76-172f-47e7-b218-34acf031a4b6"
 }
 
 ### 3. Crear columna (sustituye boardId por el id devuelto en el paso 2)
@@ -90,3 +90,13 @@ Authorization: Bearer {{token}}
 ### 8. Borrar una tarea
 DELETE http://localhost:8080/api/tasks/87f4313e-d17e-4933-831d-b2a8b3ff56f9
 Authorization: Bearer {{token}}
+
+### 9. Renombrar tablero SIENDO EL DUEÑO -> debería dar 200 OK
+PUT http://localhost:8080/api/boards/rename
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "boardId": "53ee7be2-342f-4cb5-8eb1-7270329192a0",
+  "newName": "Tablero renombrado"
+}

@@ -5,6 +5,7 @@ import es.neila.daw.taskmanagerapi.application.dto.CreateBoardRequest;
 import es.neila.daw.taskmanagerapi.application.dto.RenameBoardRequest;
 import es.neila.daw.taskmanagerapi.application.usecase.board.ChangeBoardOrderUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.board.CreateBoardUseCase;
+import es.neila.daw.taskmanagerapi.application.usecase.board.DeleteBoardUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.board.RenameBoardUseCase;
 import es.neila.daw.taskmanagerapi.domain.model.Board;
 import org.springframework.http.HttpStatus;
@@ -20,12 +21,13 @@ public class BoardController {
     private final CreateBoardUseCase createBoardUseCase;
     private final RenameBoardUseCase renameBoardUseCase;
     private final ChangeBoardOrderUseCase changeBoardOrderUseCase;
+    private final DeleteBoardUseCase deleteBoardUseCase;
 
-
-    public BoardController(CreateBoardUseCase createBoardUseCase, RenameBoardUseCase renameBoardUseCase, ChangeBoardOrderUseCase changeBoardOrderUseCase) {
+    public BoardController(CreateBoardUseCase createBoardUseCase, RenameBoardUseCase renameBoardUseCase, ChangeBoardOrderUseCase changeBoardOrderUseCase, DeleteBoardUseCase deleteBoardUseCase) {
         this.createBoardUseCase = createBoardUseCase;
         this.renameBoardUseCase = renameBoardUseCase;
         this.changeBoardOrderUseCase = changeBoardOrderUseCase;
+        this.deleteBoardUseCase = deleteBoardUseCase;
     }
 
     @PostMapping
@@ -45,5 +47,12 @@ public class BoardController {
         UUID currentUserId = UUID.fromString(authentication.getName());
 
         return changeBoardOrderUseCase.execute(request, currentUserId);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBoard(@PathVariable UUID id, Authentication authentication) {
+        UUID userId = UUID.fromString(authentication.getName());
+        deleteBoardUseCase.execute(id, userId);
     }
 }

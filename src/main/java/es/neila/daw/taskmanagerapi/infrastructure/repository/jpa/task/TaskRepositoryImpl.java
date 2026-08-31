@@ -45,4 +45,9 @@ public class TaskRepositoryImpl implements TaskRepository {
     public void delete(UUID id) {
         jpaRepository.deleteById(id);
     }
+
+    @Override
+    public void deleteByColumnIds(List<UUID> columnIds) {
+        jpaRepository.deleteByColumnIdIn(columnIds);
+    }
 }

@@ -1,6 +1,7 @@
 package es.neila.daw.taskmanagerapi.application.usecase.column;
 
 import es.neila.daw.taskmanagerapi.domain.event.AuditDomainEvent;
+import es.neila.daw.taskmanagerapi.domain.event.ColumnDeletedEvent;
 import es.neila.daw.taskmanagerapi.domain.model.Board;
 import es.neila.daw.taskmanagerapi.domain.model.Column;
 import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
@@ -32,6 +33,8 @@ public class DeleteColumnUseCase {
         board.verifyCanEditContent(performedByUserId);
 
         columnRepository.delete(columnId);
+
+        eventPublisher.publish(new ColumnDeletedEvent(columnId, performedByUserId));
 
         eventPublisher.publish(new AuditDomainEvent(
                 columnId,

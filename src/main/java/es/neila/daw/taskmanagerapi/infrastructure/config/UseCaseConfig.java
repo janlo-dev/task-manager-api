@@ -2,9 +2,11 @@ package es.neila.daw.taskmanagerapi.infrastructure.config;
 
 import es.neila.daw.taskmanagerapi.application.usecase.board.ChangeBoardOrderUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.board.CreateBoardUseCase;
+import es.neila.daw.taskmanagerapi.application.usecase.board.DeleteBoardUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.board.RenameBoardUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.column.ChangeColumnOrderUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.column.CreateColumnUseCase;
+import es.neila.daw.taskmanagerapi.application.usecase.column.DeleteColumnUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.column.RenameColumnUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.task.*;
 import es.neila.daw.taskmanagerapi.application.usecase.user.ChangeUserEmailUseCase;
@@ -74,6 +76,11 @@ public class UseCaseConfig {
         return new ChangeBoardOrderUseCase(boardRepository, eventPublisher);
     }
 
+    @Bean
+    public DeleteBoardUseCase deleteBoardUseCase(BoardRepository boardRepository, DomainEventPublisher eventPublisher) {
+        return new DeleteBoardUseCase(boardRepository, eventPublisher);
+    }
+
     // --- Column ---
     @Bean
     public CreateColumnUseCase createColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardRepository boardRepository) {
@@ -88,6 +95,11 @@ public class UseCaseConfig {
     @Bean
     public ChangeColumnOrderUseCase changeColumnOrderUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardRepository boardRepository) {
         return new ChangeColumnOrderUseCase(columnRepository, eventPublisher, boardRepository);
+    }
+
+    @Bean
+    public DeleteColumnUseCase deleteColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardRepository boardRepository) {
+        return new DeleteColumnUseCase(columnRepository, eventPublisher, boardRepository);
     }
 
     // --- User ---

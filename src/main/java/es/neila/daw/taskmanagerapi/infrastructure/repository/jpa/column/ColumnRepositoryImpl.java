@@ -44,4 +44,14 @@ public class ColumnRepositoryImpl implements ColumnRepository {
     public void delete(UUID id) {
         jpaRepository.deleteById(id);
     }
+
+    @Override
+    public List<UUID> findIdsByBoardId(UUID boardId) {
+        return jpaRepository.findIdsByBoardId(boardId);
+    }
+
+    @Override
+    public void deleteAllByIds(List<UUID> columnIds) {
+        jpaRepository.deleteAllByIdIn(columnIds);
+    }
 }

@@ -12,6 +12,7 @@ public class TaskMapper {
                 task.getId(),
                 task.getTitle(),
                 task.getDescription(),
+                task.getAssignedUserId(),
                 task.getColumnId()
         );
 
@@ -26,6 +27,7 @@ public class TaskMapper {
                 entity.getId(),
                 entity.getTitle(),
                 entity.getDescription(),
+                entity.getAssignedUserId(),
                 entity.getColumnId(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()

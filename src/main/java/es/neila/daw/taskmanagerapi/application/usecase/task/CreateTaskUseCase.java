@@ -41,6 +41,7 @@ public class CreateTaskUseCase {
                 UUID.randomUUID(),
                 request.title(),
                 request.description(),
+                null,
                 request.columnId()
         );
         Task savedTask = taskRepository.save(task);

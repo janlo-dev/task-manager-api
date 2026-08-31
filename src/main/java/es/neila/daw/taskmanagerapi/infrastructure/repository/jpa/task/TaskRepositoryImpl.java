@@ -1,5 +1,6 @@
 package es.neila.daw.taskmanagerapi.infrastructure.repository.jpa.task;
 
+import es.neila.daw.taskmanagerapi.application.dto.UserTaskProjectionResponse;
 import es.neila.daw.taskmanagerapi.domain.model.Task;
 import es.neila.daw.taskmanagerapi.domain.repository.TaskRepository;
 import es.neila.daw.taskmanagerapi.infrastructure.mapper.TaskMapper;
@@ -49,5 +50,10 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public void deleteByColumnIds(List<UUID> columnIds) {
         jpaRepository.deleteByColumnIdIn(columnIds);
+    }
+
+    @Override
+    public List<UserTaskProjectionResponse> findTasksByAssignedUserId(UUID userId) {
+        return jpaRepository.findTasksByAssignedUserId(userId);
     }
 }

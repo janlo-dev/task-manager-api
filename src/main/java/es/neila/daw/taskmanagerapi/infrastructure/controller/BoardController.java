@@ -3,15 +3,13 @@ package es.neila.daw.taskmanagerapi.infrastructure.controller;
 import es.neila.daw.taskmanagerapi.application.dto.ChangeBoardOrderRequest;
 import es.neila.daw.taskmanagerapi.application.dto.CreateBoardRequest;
 import es.neila.daw.taskmanagerapi.application.dto.RenameBoardRequest;
-import es.neila.daw.taskmanagerapi.application.usecase.board.ChangeBoardOrderUseCase;
-import es.neila.daw.taskmanagerapi.application.usecase.board.CreateBoardUseCase;
-import es.neila.daw.taskmanagerapi.application.usecase.board.DeleteBoardUseCase;
-import es.neila.daw.taskmanagerapi.application.usecase.board.RenameBoardUseCase;
+import es.neila.daw.taskmanagerapi.application.usecase.board.*;
 import es.neila.daw.taskmanagerapi.domain.model.Board;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -22,12 +20,14 @@ public class BoardController {
     private final RenameBoardUseCase renameBoardUseCase;
     private final ChangeBoardOrderUseCase changeBoardOrderUseCase;
     private final DeleteBoardUseCase deleteBoardUseCase;
+    private final GetBoardsByUserUseCase getBoardsByUserUseCase;
 
-    public BoardController(CreateBoardUseCase createBoardUseCase, RenameBoardUseCase renameBoardUseCase, ChangeBoardOrderUseCase changeBoardOrderUseCase, DeleteBoardUseCase deleteBoardUseCase) {
+    public BoardController(CreateBoardUseCase createBoardUseCase, RenameBoardUseCase renameBoardUseCase, ChangeBoardOrderUseCase changeBoardOrderUseCase, DeleteBoardUseCase deleteBoardUseCase, GetBoardsByUserUseCase getBoardsByUserUseCase) {
         this.createBoardUseCase = createBoardUseCase;
         this.renameBoardUseCase = renameBoardUseCase;
         this.changeBoardOrderUseCase = changeBoardOrderUseCase;
         this.deleteBoardUseCase = deleteBoardUseCase;
+        this.getBoardsByUserUseCase = getBoardsByUserUseCase;
     }
 
     @PostMapping
@@ -55,5 +55,11 @@ public class BoardController {
     public void deleteBoard(@PathVariable UUID id, Authentication authentication) {
         UUID userId = UUID.fromString(authentication.getName());
         deleteBoardUseCase.execute(id, userId);
+    }
+
+    @GetMapping("/me")
+    public List<Board> getMyBoards(Authentication authentication) {
+        UUID currentUserId = UUID.fromString(authentication.getName());
+        return getBoardsByUserUseCase.execute(currentUserId);
     }
 }

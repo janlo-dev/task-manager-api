@@ -8,25 +8,28 @@ public class Task {
     private final UUID id;
     private String title;
     private String description;
-    private LocalDateTime createdAt;
+    private final LocalDateTime createdAt;
     private LocalDateTime updatedAt ;
-    private UUID columnId; // realción con columna( solo por ID, no por objeto)
+    private final UUID assignedUserId;
+    private UUID columnId;
 
-    public Task(UUID id, String title, String description, UUID columnId) {
+    public Task(UUID id, String title, String description, UUID assignedUserId, UUID columnId) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.createdAt = LocalDateTime.now();
         this.updatedAt  = LocalDateTime.now();
+        this.assignedUserId = assignedUserId;
         this.columnId = columnId;
     }
 
-    public Task(UUID id, String title, String description,UUID columnId,
+    public Task(UUID id, String title, String description, UUID assignedUserId, UUID columnId,
                 LocalDateTime createdAt, LocalDateTime updatedAt) {
 
         this.id = id;
         this.title = title;
         this.description = description;
+        this.assignedUserId = assignedUserId;
         this.columnId = columnId;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -56,5 +59,6 @@ public class Task {
     public String getDescription() {return description;}
     public LocalDateTime getCreatedAt() {return createdAt;}
     public LocalDateTime getUpdatedAt() {return updatedAt;}
+    public UUID getAssignedUserId(){return assignedUserId;}
     public UUID getColumnId() {return columnId;}
 }

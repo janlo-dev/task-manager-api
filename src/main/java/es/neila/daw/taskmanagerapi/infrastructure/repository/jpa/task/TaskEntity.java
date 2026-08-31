@@ -21,15 +21,19 @@ public class TaskEntity {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt ;
 
+    @Column(name = "assigned_user_id")
+    private UUID assignedUserId;
+
     @Column(name = "column_id")
     private UUID columnId;
 
     public TaskEntity() {}
 
-    public TaskEntity(UUID id, String title, String description, UUID columnId) {
+    public TaskEntity(UUID id, String title, String description, UUID assignedUserId, UUID columnId) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.assignedUserId = assignedUserId;
         this.columnId = columnId;
     }
 }

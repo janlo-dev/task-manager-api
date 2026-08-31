@@ -1,8 +1,7 @@
 package es.neila.daw.taskmanagerapi.domain.repository;
 
+import es.neila.daw.taskmanagerapi.application.dto.UserTaskProjectionResponse;
 import es.neila.daw.taskmanagerapi.domain.model.Task;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,8 +13,6 @@ public interface TaskRepository {
     Optional<Task> findById(UUID id);
     List<Task> findByColumnId(UUID columnId);
     void delete(UUID id);
-
-    @Modifying
-    @Query("DELETE FROM TaskEntity t WHERE t.columnId IN :columnIds")
     void deleteByColumnIds(List<UUID> columnIds);
+    List<UserTaskProjectionResponse> findTasksByAssignedUserId(UUID userId);
 }

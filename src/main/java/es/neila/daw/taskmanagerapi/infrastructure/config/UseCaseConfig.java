@@ -1,5 +1,7 @@
 package es.neila.daw.taskmanagerapi.infrastructure.config;
 
+import es.neila.daw.taskmanagerapi.application.usecase.audit.GetAuditLogByEntityUseCase;
+import es.neila.daw.taskmanagerapi.application.usecase.audit.GetAuditLogByUserUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.board.ChangeBoardOrderUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.board.CreateBoardUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.board.DeleteBoardUseCase;
@@ -11,10 +13,7 @@ import es.neila.daw.taskmanagerapi.application.usecase.column.RenameColumnUseCas
 import es.neila.daw.taskmanagerapi.application.usecase.task.*;
 import es.neila.daw.taskmanagerapi.application.usecase.user.ChangeUserEmailUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.user.RenameUserUseCase;
-import es.neila.daw.taskmanagerapi.domain.repository.BoardRepository;
-import es.neila.daw.taskmanagerapi.domain.repository.ColumnRepository;
-import es.neila.daw.taskmanagerapi.domain.repository.TaskRepository;
-import es.neila.daw.taskmanagerapi.domain.repository.UserRepository;
+import es.neila.daw.taskmanagerapi.domain.repository.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
@@ -23,7 +22,6 @@ import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
 public class UseCaseConfig {
 
     // --- Task ---
-
     @Bean
     public CreateTaskUseCase createTaskUseCase(TaskRepository taskRepository, DomainEventPublisher eventPublisher, ColumnRepository columnRepository,
                                                BoardRepository boardRepository) {
@@ -60,7 +58,6 @@ public class UseCaseConfig {
     }
 
     // --- Board ---
-
     @Bean
     public CreateBoardUseCase createBoardUseCase(BoardRepository boardRepository, DomainEventPublisher eventPublisher) {
         return new CreateBoardUseCase(boardRepository, eventPublisher);
@@ -103,7 +100,6 @@ public class UseCaseConfig {
     }
 
     // --- User ---
-
     @Bean
     public RenameUserUseCase renameUserUseCase(UserRepository userRepository, DomainEventPublisher eventPublisher) {
         return new RenameUserUseCase(userRepository, eventPublisher);
@@ -112,5 +108,16 @@ public class UseCaseConfig {
     @Bean
     public ChangeUserEmailUseCase changeUserEmailUseCase(UserRepository userRepository, DomainEventPublisher eventPublisher) {
         return new ChangeUserEmailUseCase(userRepository, eventPublisher);
+    }
+
+    // --- Audit ---
+    @Bean
+    public GetAuditLogByEntityUseCase getAuditLogByEntityUseCase(AuditLogRepository auditLogRepository) {
+        return new GetAuditLogByEntityUseCase(auditLogRepository);
+    }
+
+    @Bean
+    public GetAuditLogByUserUseCase getAuditLogByUserUseCase(AuditLogRepository auditLogRepository) {
+        return new GetAuditLogByUserUseCase(auditLogRepository);
     }
 }

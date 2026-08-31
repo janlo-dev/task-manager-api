@@ -18,10 +18,10 @@ public class CreateBoardUseCase {
         this.eventPublisher = eventPublisher;
     }
 
-    public Board execute(CreateBoardRequest request) {
+    public Board execute(CreateBoardRequest request,  UUID userId) {
         Board board = new Board(
                 UUID.randomUUID(),
-                request.userId(),
+                userId,
                 request.name(),
                 request.boardOrder()
         );
@@ -32,7 +32,7 @@ public class CreateBoardUseCase {
                 savedBoard.getId(),
                 "Board",
                 "CREATED",
-                request.userId(),
+                userId,
                 "Board created with name: " + savedBoard.getName()
         ));
 

@@ -32,8 +32,9 @@ public class BoardController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Board create(@RequestBody CreateBoardRequest request) {
-        return createBoardUseCase.execute(request);
+    public Board create(@RequestBody CreateBoardRequest request, Authentication authentication) {
+        UUID currentUserId = UUID.fromString(authentication.getName());
+        return createBoardUseCase.execute(request, currentUserId);
     }
 
     @PutMapping("/rename")

@@ -100,3 +100,11 @@ Authorization: Bearer {{token}}
   "boardId": "53ee7be2-342f-4cb5-8eb1-7270329192a0",
   "newName": "Tablero renombrado"
 }
+
+### 10. Historial de un tablero concreto
+GET http://localhost:8080/api/audit/entity/ID_DE_UN_BOARD
+Authorization: Bearer {{token}}
+
+### 11. Todo lo que ha hecho un usuario
+GET http://localhost:8080/api/audit/user/ID_DE_UN_USUARIO
+Authorization: Bearer {{token}}

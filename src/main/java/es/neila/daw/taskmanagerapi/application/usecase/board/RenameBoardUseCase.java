@@ -23,8 +23,8 @@ public class RenameBoardUseCase {
         Board board = boardRepository.findById(request.boardId())
                 .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
-        board.rename(request.newName());
         board.verifyCanManage(performedByUserId);
+        board.rename(request.newName());
 
         Board savedBoard =  boardRepository.save(board);
 

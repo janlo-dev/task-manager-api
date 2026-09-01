@@ -108,3 +108,17 @@ Authorization: Bearer {{token}}
 ### 11. Todo lo que ha hecho un usuario
 GET http://localhost:8080/api/audit/user/ID_DE_UN_USUARIO
 Authorization: Bearer {{token}}
+
+### 12. Asignar una tarea a un usuario
+PUT http://localhost:8080/api/tasks/assign
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "taskId": "ID_DE_LA_TAREA",
+  "assignedUserId": "ID_DEL_USUARIO"
+}
+
+### 13. Historial de ese usuario
+GET http://localhost:8080/api/tasks/user/ID_DEL_USUARIO
+Authorization: Bearer {{token}}

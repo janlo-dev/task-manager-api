@@ -10,7 +10,7 @@ public class Task {
     private String description;
     private final LocalDateTime createdAt;
     private LocalDateTime updatedAt ;
-    private final UUID assignedUserId;
+    private UUID assignedUserId;
     private UUID columnId;
 
     public Task(UUID id, String title, String description, UUID assignedUserId, UUID columnId) {
@@ -51,6 +51,16 @@ public class Task {
 
     public void moveToColumn(UUID newColumnId) {
         this.columnId = newColumnId;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void assignTo(UUID userId) {
+        this.assignedUserId = userId;
+        this.updatedAt = LocalDateTime.now();
+    }
+
+    public void unassign() {
+        this.assignedUserId = null;
         this.updatedAt = LocalDateTime.now();
     }
 

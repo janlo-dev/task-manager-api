@@ -55,6 +55,11 @@ public class UseCaseConfig {
         return new UpdateTaskDescriptionUseCase(taskRepository, eventPublisher, columnRepository, boardRepository);
     }
 
+    @Bean
+    public AssignTaskUseCase assignTaskUseCase(TaskRepository taskRepository, ColumnRepository columnRepository, BoardRepository boardRepository, UserRepository userRepository, DomainEventPublisher eventPublisher) {
+        return new AssignTaskUseCase(taskRepository, columnRepository, boardRepository, userRepository, eventPublisher);
+    }
+
     // --- Board ---
     @Bean
     public CreateBoardUseCase createBoardUseCase(BoardRepository boardRepository, DomainEventPublisher eventPublisher) {
@@ -115,8 +120,8 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public GetUserAssignedTasksUseCase getUserAssignedTasksUseCase(TaskRepository taskRepository) {
-        return new GetUserAssignedTasksUseCase(taskRepository);
+    public GetUserAssignedTasksUseCase getUserAssignedTasksUseCase(TaskRepository taskRepository, ColumnRepository columnRepository, BoardRepository boardRepository) {
+        return new GetUserAssignedTasksUseCase(taskRepository, columnRepository, boardRepository);
     }
 
     // --- Audit ---

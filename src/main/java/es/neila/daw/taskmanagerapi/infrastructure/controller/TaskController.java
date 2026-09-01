@@ -1,9 +1,6 @@
 package es.neila.daw.taskmanagerapi.infrastructure.controller;
 
-import es.neila.daw.taskmanagerapi.application.dto.CreateTaskRequest;
-import es.neila.daw.taskmanagerapi.application.dto.MoveTaskRequest;
-import es.neila.daw.taskmanagerapi.application.dto.RenameTaskRequest;
-import es.neila.daw.taskmanagerapi.application.dto.UpdateTaskDescriptionRequest;
+import es.neila.daw.taskmanagerapi.application.dto.*;
 import es.neila.daw.taskmanagerapi.application.usecase.task.*;
 import es.neila.daw.taskmanagerapi.domain.model.Task;
 import org.springframework.http.HttpStatus;
@@ -23,14 +20,16 @@ public class TaskController {
     private final MoveTaskUseCase moveTaskUseCase;
     private final DeleteTaskUseCase deleteTaskUseCase;
     private final GetTasksByColumnUseCase getTasksByColumnUseCase;
+    private final AssignTaskUseCase assignTaskUseCase;
 
-    public TaskController(CreateTaskUseCase createTaskUseCase, RenameTaskUseCase renameTaskUseCase, UpdateTaskDescriptionUseCase updateTaskDescriptionUseCase, MoveTaskUseCase moveTaskUseCase, DeleteTaskUseCase deleteTaskUseCase, GetTasksByColumnUseCase getTasksByColumnUseCase) {
+    public TaskController(CreateTaskUseCase createTaskUseCase, RenameTaskUseCase renameTaskUseCase, UpdateTaskDescriptionUseCase updateTaskDescriptionUseCase, MoveTaskUseCase moveTaskUseCase, DeleteTaskUseCase deleteTaskUseCase, GetTasksByColumnUseCase getTasksByColumnUseCase, AssignTaskUseCase assignTaskUseCase) {
         this.createTaskUseCase = createTaskUseCase;
         this.renameTaskUseCase = renameTaskUseCase;
         this.updateTaskDescriptionUseCase = updateTaskDescriptionUseCase;
         this.moveTaskUseCase = moveTaskUseCase;
         this.deleteTaskUseCase = deleteTaskUseCase;
         this.getTasksByColumnUseCase = getTasksByColumnUseCase;
+        this.assignTaskUseCase = assignTaskUseCase;
     }
 
     @PostMapping
@@ -68,5 +67,11 @@ public class TaskController {
     public void delete(@PathVariable UUID taskId, Authentication authentication) {
         UUID currentUserId = UUID.fromString(authentication.getName());
         deleteTaskUseCase.execute(taskId, currentUserId);
+    }
+
+    @PutMapping("/assign")
+    public Task assign(@RequestBody AssignTaskRequest request, Authentication authentication) {
+        UUID currentUserId = UUID.fromString(authentication.getName());
+        return assignTaskUseCase.execute(request, currentUserId);
     }
 }

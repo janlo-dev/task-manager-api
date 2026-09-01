@@ -4,6 +4,7 @@ import es.neila.daw.taskmanagerapi.application.dto.*;
 import es.neila.daw.taskmanagerapi.domain.model.User;
 import es.neila.daw.taskmanagerapi.domain.repository.UserRepository;
 import es.neila.daw.taskmanagerapi.infrastructure.config.JwtService;
+import es.neila.daw.taskmanagerapi.infrastructure.email.EmailService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +18,13 @@ public class AuthController {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final EmailService emailService;
 
-    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public AuthController(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
+        this.emailService = emailService;
     }
 
     @PostMapping("/register")
@@ -32,8 +35,9 @@ public class AuthController {
         User user = new User(UUID.randomUUID(), request.name(), request.email(), hashedPassword);
         userRepository.save(user);
 
-        String accessToken = jwtService.generateToken(user.getId());
+        emailService.sendWelcomeEmail(user.getEmail(), user.getName());
 
+        String accessToken = jwtService.generateToken(user.getId());
         return new AuthResponse(user.getId(), accessToken);
     }
 

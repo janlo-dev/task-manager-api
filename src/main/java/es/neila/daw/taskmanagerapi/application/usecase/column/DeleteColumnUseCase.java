@@ -1,5 +1,6 @@
 package es.neila.daw.taskmanagerapi.application.usecase.column;
 
+import es.neila.daw.taskmanagerapi.application.service.BoardAccessChecker;
 import es.neila.daw.taskmanagerapi.domain.event.AuditDomainEvent;
 import es.neila.daw.taskmanagerapi.domain.event.ColumnDeletedEvent;
 import es.neila.daw.taskmanagerapi.domain.model.Board;
@@ -14,12 +15,12 @@ public class DeleteColumnUseCase {
 
     private final ColumnRepository columnRepository;
     private final DomainEventPublisher eventPublisher;
-    private final BoardRepository boardRepository;
+    private final BoardAccessChecker boardAccessChecker;
 
-    public DeleteColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardRepository boardRepository) {
+    public DeleteColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardAccessChecker boardAccessChecker) {
         this.columnRepository = columnRepository;
         this.eventPublisher = eventPublisher;
-        this.boardRepository = boardRepository;
+        this.boardAccessChecker = boardAccessChecker;
     }
 
     public void execute(UUID columnId, UUID performedByUserId) {
@@ -27,10 +28,7 @@ public class DeleteColumnUseCase {
         Column column = columnRepository.findById(columnId)
                 .orElseThrow(() -> new IllegalArgumentException("Column not found"));
 
-        Board board = boardRepository.findById(column.getBoardId())
-                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
-
-        board.verifyCanEditContent(performedByUserId);
+        boardAccessChecker.verifyCanEditContent(column.getBoardId(), performedByUserId);
 
         columnRepository.delete(columnId);
 

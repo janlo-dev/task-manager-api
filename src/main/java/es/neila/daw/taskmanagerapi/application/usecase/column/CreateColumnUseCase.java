@@ -1,6 +1,7 @@
 package es.neila.daw.taskmanagerapi.application.usecase.column;
 
 import es.neila.daw.taskmanagerapi.application.dto.CreateColumnRequest;
+import es.neila.daw.taskmanagerapi.application.service.BoardAccessChecker;
 import es.neila.daw.taskmanagerapi.domain.event.AuditDomainEvent;
 import es.neila.daw.taskmanagerapi.domain.model.Board;
 import es.neila.daw.taskmanagerapi.domain.model.Column;
@@ -15,21 +16,17 @@ public class CreateColumnUseCase {
 
     private final ColumnRepository columnRepository;
     private final DomainEventPublisher eventPublisher;
-    private final BoardRepository boardRepository;
+    private final BoardAccessChecker boardAccessChecker;
 
-    public CreateColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardRepository boardRepository){
+    public CreateColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardAccessChecker boardAccessChecker){
         this.columnRepository = columnRepository;
         this.eventPublisher = eventPublisher;
-        this.boardRepository = boardRepository;
+        this.boardAccessChecker = boardAccessChecker;
     }
-
 
     public Column execute(CreateColumnRequest request, UUID performedByUserId) {
 
-        Board board = boardRepository.findById(request.boardId())
-                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
-
-        board.verifyCanEditContent(performedByUserId);
+        boardAccessChecker.verifyCanEditContent(request.boardId(), performedByUserId);
 
         Column column = new Column(
                 request.boardId(),

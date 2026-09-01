@@ -44,12 +44,6 @@ public class Board {
         }
     }
 
-    public void verifyCanEditContent(UUID requesterId) {
-        if (!this.userId.equals(requesterId)) {
-            throw new IllegalArgumentException("You don't have access to this board");
-        }
-    }
-
     public UUID getId() {return id;}
 
     public UUID getUserId() {return userId;}

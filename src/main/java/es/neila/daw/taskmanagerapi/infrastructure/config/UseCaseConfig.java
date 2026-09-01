@@ -1,5 +1,6 @@
 package es.neila.daw.taskmanagerapi.infrastructure.config;
 
+import es.neila.daw.taskmanagerapi.application.service.BoardAccessChecker;
 import es.neila.daw.taskmanagerapi.application.usecase.audit.GetAuditLogByEntityUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.audit.GetAuditLogByUserUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.board.*;
@@ -22,20 +23,20 @@ public class UseCaseConfig {
     // --- Task ---
     @Bean
     public CreateTaskUseCase createTaskUseCase(TaskRepository taskRepository, DomainEventPublisher eventPublisher, ColumnRepository columnRepository,
-                                               BoardRepository boardRepository) {
-        return new CreateTaskUseCase(taskRepository, eventPublisher, columnRepository, boardRepository);
+                                               BoardAccessChecker boardAccessChecker) {
+        return new CreateTaskUseCase(taskRepository, eventPublisher, columnRepository, boardAccessChecker);
     }
 
     @Bean
     public MoveTaskUseCase moveTaskUseCase(TaskRepository taskRepository, DomainEventPublisher eventPublisher, ColumnRepository columnRepository,
-                                           BoardRepository boardRepository) {
-        return new MoveTaskUseCase(taskRepository, eventPublisher, columnRepository, boardRepository);
+                                           BoardAccessChecker boardAccessChecker) {
+        return new MoveTaskUseCase(taskRepository, eventPublisher, columnRepository, boardAccessChecker);
     }
 
     @Bean
     public DeleteTaskUseCase deleteTaskUseCase(TaskRepository taskRepository, DomainEventPublisher eventPublisher, ColumnRepository columnRepository,
-                                               BoardRepository boardRepository) {
-        return new DeleteTaskUseCase(taskRepository, eventPublisher, columnRepository, boardRepository);
+                                               BoardAccessChecker boardAccessChecker) {
+        return new DeleteTaskUseCase(taskRepository, eventPublisher, columnRepository, boardAccessChecker);
     }
 
     @Bean
@@ -45,25 +46,25 @@ public class UseCaseConfig {
 
     @Bean
     public RenameTaskUseCase renameTaskUseCase(TaskRepository taskRepository, DomainEventPublisher eventPublisher, ColumnRepository columnRepository,
-                                               BoardRepository boardRepository) {
-        return new RenameTaskUseCase(taskRepository, eventPublisher, columnRepository, boardRepository);
+                                               BoardAccessChecker boardAccessChecker) {
+        return new RenameTaskUseCase(taskRepository, eventPublisher, columnRepository, boardAccessChecker);
     }
 
     @Bean
     public UpdateTaskDescriptionUseCase updateTaskDescriptionUseCase(TaskRepository taskRepository, DomainEventPublisher eventPublisher, ColumnRepository columnRepository,
-                                                                     BoardRepository boardRepository) {
-        return new UpdateTaskDescriptionUseCase(taskRepository, eventPublisher, columnRepository, boardRepository);
+                                                                     BoardAccessChecker boardAccessChecker) {
+        return new UpdateTaskDescriptionUseCase(taskRepository, eventPublisher, columnRepository, boardAccessChecker);
     }
 
     @Bean
-    public AssignTaskUseCase assignTaskUseCase(TaskRepository taskRepository, ColumnRepository columnRepository, BoardRepository boardRepository, UserRepository userRepository, DomainEventPublisher eventPublisher) {
-        return new AssignTaskUseCase(taskRepository, columnRepository, boardRepository, userRepository, eventPublisher);
+    public AssignTaskUseCase assignTaskUseCase(TaskRepository taskRepository, ColumnRepository columnRepository, BoardAccessChecker boardAccessChecker, UserRepository userRepository, DomainEventPublisher eventPublisher) {
+        return new AssignTaskUseCase(taskRepository, columnRepository, boardAccessChecker, userRepository, eventPublisher);
     }
 
     // --- Board ---
     @Bean
-    public CreateBoardUseCase createBoardUseCase(BoardRepository boardRepository, DomainEventPublisher eventPublisher) {
-        return new CreateBoardUseCase(boardRepository, eventPublisher);
+    public CreateBoardUseCase createBoardUseCase(BoardRepository boardRepository, DomainEventPublisher eventPublisher, BoardMemberRepository boardMemberRepository) {
+        return new CreateBoardUseCase(boardRepository, eventPublisher, boardMemberRepository);
     }
 
     @Bean
@@ -86,26 +87,46 @@ public class UseCaseConfig {
         return new GetBoardsByUserUseCase(boardRepository);
     }
 
+    @Bean
+    public BoardAccessChecker boardAccessChecker(BoardMemberRepository boardMemberRepository) {
+        return new BoardAccessChecker(boardMemberRepository);
+    }
+
+    @Bean
+    public InviteBoardMemberUseCase inviteBoardMemberUseCase(BoardRepository boardRepository, BoardMemberRepository boardMemberRepository, UserRepository userRepository, DomainEventPublisher eventPublisher) {
+        return new InviteBoardMemberUseCase(boardRepository, boardMemberRepository, userRepository, eventPublisher);
+    }
+
+    @Bean
+    public RemoveBoardMemberUseCase removeBoardMemberUseCase(BoardRepository boardRepository, BoardMemberRepository boardMemberRepository, DomainEventPublisher eventPublisher) {
+        return new RemoveBoardMemberUseCase(boardRepository, boardMemberRepository, eventPublisher);
+    }
+
+    @Bean
+    public GetBoardMembersUseCase getBoardMembersUseCase(BoardMemberRepository boardMemberRepository) {
+        return new GetBoardMembersUseCase(boardMemberRepository);
+    }
+
 
     // --- Column ---
     @Bean
-    public CreateColumnUseCase createColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardRepository boardRepository) {
-        return new CreateColumnUseCase(columnRepository, eventPublisher, boardRepository);
+    public CreateColumnUseCase createColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardAccessChecker boardAccessChecker) {
+        return new CreateColumnUseCase(columnRepository, eventPublisher, boardAccessChecker);
     }
 
     @Bean
-    public RenameColumnUseCase renameColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardRepository boardRepository) {
-        return new RenameColumnUseCase(columnRepository, eventPublisher, boardRepository);
+    public RenameColumnUseCase renameColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardAccessChecker boardAccessChecker) {
+        return new RenameColumnUseCase(columnRepository, eventPublisher, boardAccessChecker);
     }
 
     @Bean
-    public ChangeColumnOrderUseCase changeColumnOrderUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardRepository boardRepository) {
-        return new ChangeColumnOrderUseCase(columnRepository, eventPublisher, boardRepository);
+    public ChangeColumnOrderUseCase changeColumnOrderUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardAccessChecker boardAccessChecker) {
+        return new ChangeColumnOrderUseCase(columnRepository, eventPublisher, boardAccessChecker);
     }
 
     @Bean
-    public DeleteColumnUseCase deleteColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardRepository boardRepository) {
-        return new DeleteColumnUseCase(columnRepository, eventPublisher, boardRepository);
+    public DeleteColumnUseCase deleteColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardAccessChecker boardAccessChecker) {
+        return new DeleteColumnUseCase(columnRepository, eventPublisher, boardAccessChecker);
     }
 
     // --- User ---

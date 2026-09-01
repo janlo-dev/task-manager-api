@@ -1,6 +1,7 @@
 package es.neila.daw.taskmanagerapi.application.usecase.task;
 
 import es.neila.daw.taskmanagerapi.application.dto.MoveTaskRequest;
+import es.neila.daw.taskmanagerapi.application.service.BoardAccessChecker;
 import es.neila.daw.taskmanagerapi.domain.event.AuditDomainEvent;
 import es.neila.daw.taskmanagerapi.domain.model.Board;
 import es.neila.daw.taskmanagerapi.domain.model.Column;
@@ -18,13 +19,13 @@ public class MoveTaskUseCase {
     private final TaskRepository taskRepository;
     private final DomainEventPublisher eventPublisher;
     private final ColumnRepository columnRepository;
-    private final BoardRepository boardRepository;
+    private final BoardAccessChecker boardAccessChecker;
 
-    public MoveTaskUseCase(TaskRepository taskRepository, DomainEventPublisher eventPublisher, ColumnRepository columnRepository, BoardRepository boardRepository) {
+    public MoveTaskUseCase(TaskRepository taskRepository, DomainEventPublisher eventPublisher, ColumnRepository columnRepository,BoardAccessChecker boardAccessChecker) {
         this.taskRepository = taskRepository;
         this.eventPublisher = eventPublisher;
         this.columnRepository = columnRepository;
-        this.boardRepository = boardRepository;
+        this.boardAccessChecker = boardAccessChecker;
     }
 
     public Task execute(MoveTaskRequest request, UUID performedByUserId){
@@ -35,10 +36,8 @@ public class MoveTaskUseCase {
         Column currentColumn = columnRepository.findById(task.getColumnId())
                 .orElseThrow(() -> new IllegalArgumentException("Column not found"));
 
-        Board board = boardRepository.findById(currentColumn.getBoardId())
-                .orElseThrow(() -> new IllegalArgumentException("Board not found"));
 
-        board.verifyCanEditContent(performedByUserId);
+        boardAccessChecker.verifyCanEditContent(currentColumn.getBoardId(), performedByUserId);
 
         task.moveToColumn(request.newColumnId());
         Task updatedTask = taskRepository.save(task);

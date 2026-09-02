@@ -1,4 +1,4 @@
-### 1. Registro Usuario
+### 1. Registro Usuario A (será el OWNER)
 POST http://localhost:8080/api/auth/register
 Content-Type: application/json
 
@@ -9,8 +9,8 @@ Content-Type: application/json
 }
 
 > {%
-    client.global.set("token", response.body.accessToken);
-    client.global.set("userId", response.body.userId);
+    client.global.set("tokenA", response.body.accessToken);
+    client.global.set("userIdA", response.body.userId);
 %}
 
 ### Login Usuario
@@ -18,7 +18,7 @@ POST http://localhost:8080/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "carlos@test.com",
+  "email": "ana@test.com",
   "password": "1234abcd"
 }
 
@@ -26,99 +26,169 @@ Content-Type: application/json
     client.global.set("token", response.body.accessToken);
 %}
 
-### Petición protegida
-GET http://localhost:8080/api/tasks?columnId=b97d1963-104f-4e3f-92b0-b8ba4a4893bb
-Authorization: Bearer {{token}}
+### Login Carla
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
 
-### 2. Crear tablero (sustituye userId por el id devuelto en el paso 1)
+{
+  "email": "carla@test.com",
+  "password": "1234abcd"
+}
+
+> {%
+    client.global.set("tokenC", response.body.accessToken);
+%}
+
+### Login Bruno
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "bruno@test.com",
+  "password": "1234abcd"
+}
+
+> {%
+    client.global.set("tokenB", response.body.accessToken);
+%}
+
+### 2. Registro Usuario B (será invitado como MEMBER)
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Bruno",
+  "email": "bruno@test.com",
+  "password": "1234abcd"
+}
+
+> {%
+    client.global.set("tokenB", response.body.accessToken);
+    client.global.set("userIdB", response.body.userId);
+%}
+
+### 3. Registro Usuario C (se queda FUERA del tablero)
+POST http://localhost:8080/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "Carla",
+  "email": "carla@test.com",
+  "password": "1234abcd"
+}
+
+> {%
+    client.global.set("tokenC", response.body.accessToken);
+%}
+
+### 4. Ana crea un tablero -> debe convertirse automáticamente en OWNER
 POST http://localhost:8080/api/boards
 Content-Type: application/json
+Authorization: Bearer {{tokenA}}
+
+{
+  "name": "Tablero de Ana",
+  "boardOrder": 0
+}
+
+> {%
+    client.global.set("boardId", response.body.id);
+%}
+
+### 5. Ana invita a Bruno por email -> debe crear BoardMember con rol MEMBER
+POST http://localhost:8080/api/boards/members/invite
+Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "name": "Mi tablero",
-  "boardOrder": 0,
-  "userId": "84e15e76-172f-47e7-b218-34acf031a4b6"
+  "boardId": "2bc44ed7-5e27-4520-abca-7e89d08b8077",
+  "email": "bruno@test.com"
 }
 
-### 3. Crear columna (sustituye boardId por el id devuelto en el paso 2)
+### 6. Comprobar la lista de miembros (lectura abierta, cualquiera puede verla)
+GET http://localhost:8080/api/boards/2bc44ed7-5e27-4520-abca-7e89d08b8077/members
+Authorization: Bearer {{tokenC}}
+
+### 7. Bruno (MEMBER) crea una columna en el tablero de Ana -> debe funcionar (201)
 POST http://localhost:8080/api/columns
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenB}}
 
 {
-  "name": "En progreso",
+  "name": "Pendiente",
   "columnOrder": 0,
-  "boardId": "8fbb998a-7890-419a-a897-3bd2f9256ea9"
+  "boardId": "2bc44ed7-5e27-4520-abca-7e89d08b8077"
 }
 
-### 4. Crear tarea (sustituye columnId por el id devuelto en el paso 3)
+> {%
+    client.global.set("columnId", response.body.id);
+%}
+
+### 8. Carla (NO es miembro) intenta crear una columna -> debe dar 400
+POST http://localhost:8080/api/columns
+Content-Type: application/json
+Authorization: Bearer {{tokenC}}
+
+{
+  "name": "Intento de intrusión",
+  "columnOrder": 1,
+  "boardId": "{{boardId}}"
+}
+
+### 9. Bruno (MEMBER) crea una tarea -> debe funcionar (201)
 POST http://localhost:8080/api/tasks
 Content-Type: application/json
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenB}}
 
 {
-  "title": "Primera tarea",
-  "description": "Probar la API",
-  "columnId": "68406d09-65bf-4e69-807f-107ef7f75705"
+  "title": "Tarea de Bruno",
+  "description": "Probando permisos de miembro",
+  "columnId": "cd73ac51-ba4b-45b3-8bf9-229ee278671e"
 }
 
-### 5. Listar tareas de esa columna
-GET http://localhost:8080/api/tasks?columnId=68406d09-65bf-4e69-807f-107ef7f75705
-Authorization: Bearer {{token}}
+> {%
+    client.global.set("taskId", response.body.id);
+%}
 
-### 6. Cambiar descripción de una tarea
-PUT http://localhost:8080/api/tasks/description
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-{
-  "taskId": "ac63b240-d55e-422a-a051-297cf031d1c8",
-  "newDescription": "Nueva descripción actualizada"
-}
-
-### 7. Mover tarea a otra columna
-PUT http://localhost:8080/api/tasks/move
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-{
-  "taskId": "5bcdd082-5760-4ea8-b5b3-cb1941b9da00",
-  "newColumnId": "c73180c6-e0e5-42eb-b949-9c2ee5e26e0c"
-}
-
-### 8. Borrar una tarea
-DELETE http://localhost:8080/api/tasks/87f4313e-d17e-4933-831d-b2a8b3ff56f9
-Authorization: Bearer {{token}}
-
-### 9. Renombrar tablero SIENDO EL DUEÑO -> debería dar 200 OK
-PUT http://localhost:8080/api/boards/rename
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-{
-  "boardId": "53ee7be2-342f-4cb5-8eb1-7270329192a0",
-  "newName": "Tablero renombrado"
-}
-
-### 10. Historial de un tablero concreto
-GET http://localhost:8080/api/audit/entity/ID_DE_UN_BOARD
-Authorization: Bearer {{token}}
-
-### 11. Todo lo que ha hecho un usuario
-GET http://localhost:8080/api/audit/user/ID_DE_UN_USUARIO
-Authorization: Bearer {{token}}
-
-### 12. Asignar una tarea a un usuario
+### 9b. Asignar la tarea a Bruno
 PUT http://localhost:8080/api/tasks/assign
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "taskId": "ID_DE_LA_TAREA",
-  "assignedUserId": "ID_DEL_USUARIO"
+  "taskId": "b7273285-6b70-43c3-bf7f-1dd1e72e568f",
+  "assignedUserId": "df9746a0-e404-4c6e-b03a-4c3c8f6c6cdd"
 }
 
-### 13. Historial de ese usuario
-GET http://localhost:8080/api/tasks/user/ID_DEL_USUARIO
-Authorization: Bearer {{token}}
+### 10. Bruno (MEMBER) intenta RENOMBRAR el tablero -> debe dar 400 (solo el OWNER puede)
+PUT http://localhost:8080/api/boards/rename
+Content-Type: application/json
+Authorization: Bearer {{tokenB}}
+
+{
+  "boardId": "2bc44ed7-5e27-4520-abca-7e89d08b8077",
+  "newName": "Bruno intenta renombrar"
+}
+
+### 11. Bruno (MEMBER) intenta EXPULSAR a alguien -> debe dar 400 (solo el OWNER puede)
+DELETE http://localhost:8080/api/boards/2bc44ed7-5e27-4520-abca-7e89d08b8077/members/7ea97b9f-9db6-436c-a5a9-9d1ecbe5b126
+Authorization: Bearer {{tokenB}}
+
+### 12. Ana (OWNER) expulsa a Bruno -> debe funcionar (204)
+DELETE http://localhost:8080/api/boards/2bc44ed7-5e27-4520-abca-7e89d08b8077/members/df9746a0-e404-4c6e-b03a-4c3c8f6c6cdd
+Authorization: Bearer {{tokenA}}
+
+### 13. Bruno, ya expulsado, intenta crear otra columna -> debe dar 400
+POST http://localhost:8080/api/columns
+Content-Type: application/json
+Authorization: Bearer {{tokenB}}
+
+{
+  "name": "Ya no debería poder",
+  "columnOrder": 2,
+  "boardId": "2bc44ed7-5e27-4520-abca-7e89d08b8077"
+}
+
+### 14. Ana intenta autoexpulsarse -> debe dar error controlado (400)
+DELETE http://localhost:8080/api/boards/{{boardId}}/members/{{userIdA}}
+Authorization: Bearer {{tokenA}}

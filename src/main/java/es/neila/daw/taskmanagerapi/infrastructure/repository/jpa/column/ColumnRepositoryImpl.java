@@ -33,14 +33,6 @@ public class ColumnRepositoryImpl implements ColumnRepository {
     }
 
     @Override
-    public List<Column> findByBoardId(UUID boardId) {
-        return jpaRepository.findByBoardId(boardId)
-                .stream()
-                .map(mapper::toDomain)
-                .toList();
-    }
-
-    @Override
     public void delete(UUID id) {
         jpaRepository.deleteById(id);
     }
@@ -53,5 +45,13 @@ public class ColumnRepositoryImpl implements ColumnRepository {
     @Override
     public void deleteAllByIds(List<UUID> columnIds) {
         jpaRepository.deleteAllByIdIn(columnIds);
+    }
+
+    @Override
+    public List<Column> findByBoardIdOrderByColumnOrderAsc(UUID boardId) {
+        return jpaRepository.findByBoardIdOrderByColumnOrderAsc(boardId)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
     }
 }

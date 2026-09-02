@@ -3,15 +3,13 @@ package es.neila.daw.taskmanagerapi.infrastructure.controller;
 import es.neila.daw.taskmanagerapi.application.dto.ChangeColumnOrderRequest;
 import es.neila.daw.taskmanagerapi.application.dto.CreateColumnRequest;
 import es.neila.daw.taskmanagerapi.application.dto.RenameColumnRequest;
-import es.neila.daw.taskmanagerapi.application.usecase.column.ChangeColumnOrderUseCase;
-import es.neila.daw.taskmanagerapi.application.usecase.column.CreateColumnUseCase;
-import es.neila.daw.taskmanagerapi.application.usecase.column.DeleteColumnUseCase;
-import es.neila.daw.taskmanagerapi.application.usecase.column.RenameColumnUseCase;
+import es.neila.daw.taskmanagerapi.application.usecase.column.*;
 import es.neila.daw.taskmanagerapi.domain.model.Column;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -22,12 +20,14 @@ public class ColumnController {
     private final RenameColumnUseCase renameColumnUseCase;
     private final ChangeColumnOrderUseCase changeColumnOrderUseCase;
     private final DeleteColumnUseCase deleteColumnUseCase;
+    private final GetColumnsByBoardUseCase getColumnsByBoardUseCase;
 
-    public ColumnController(CreateColumnUseCase createColumnUseCase, RenameColumnUseCase renameColumnUseCase, ChangeColumnOrderUseCase changeColumnOrderUseCase, DeleteColumnUseCase deleteColumnUseCase) {
+    public ColumnController(CreateColumnUseCase createColumnUseCase, RenameColumnUseCase renameColumnUseCase, ChangeColumnOrderUseCase changeColumnOrderUseCase, DeleteColumnUseCase deleteColumnUseCase, GetColumnsByBoardUseCase getColumnsByBoardUseCase) {
         this.createColumnUseCase = createColumnUseCase;
         this.renameColumnUseCase = renameColumnUseCase;
         this.changeColumnOrderUseCase = changeColumnOrderUseCase;
         this.deleteColumnUseCase = deleteColumnUseCase;
+        this.getColumnsByBoardUseCase = getColumnsByBoardUseCase;
     }
 
     @PostMapping
@@ -54,5 +54,10 @@ public class ColumnController {
     public void deleteColumn(@PathVariable UUID id, Authentication authentication) {
         UUID userId = UUID.fromString(authentication.getName());
         deleteColumnUseCase.execute(id, userId);
+    }
+
+    @GetMapping("/board/{boardId}")
+    public List<Column> getByBoard(@PathVariable UUID boardId) {
+        return getColumnsByBoardUseCase.execute(boardId);
     }
 }

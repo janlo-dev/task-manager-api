@@ -49,4 +49,12 @@ public class BoardMemberRepositoryImpl implements BoardMemberRepository {
     public void deleteByBoardId(UUID boardId) {
         jpaRepository.deleteByBoardId(boardId);
     }
+
+    @Override
+    public List<BoardMember> findByUserId(UUID userId) {
+        return jpaRepository.findByUserId(userId)
+                .stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
 }

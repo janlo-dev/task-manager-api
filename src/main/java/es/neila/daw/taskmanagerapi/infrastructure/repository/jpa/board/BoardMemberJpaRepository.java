@@ -12,4 +12,5 @@ public interface BoardMemberJpaRepository extends JpaRepository<BoardMemberEntit
     List<BoardMemberEntity> findByBoardId(UUID boardId);
     void deleteByBoardIdAndUserId(UUID boardId, UUID userId);
     void deleteByBoardId(UUID boardId);
+    List<BoardMemberEntity> findByUserId(UUID userId);
 }

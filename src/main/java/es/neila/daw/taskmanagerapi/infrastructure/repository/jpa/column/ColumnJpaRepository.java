@@ -10,12 +10,12 @@ import java.util.UUID;
 
 public interface ColumnJpaRepository extends JpaRepository<ColumnEntity, UUID> {
 
-    List<ColumnEntity> findByBoardId(UUID boardId);
-
     @Query("SELECT c.id FROM ColumnEntity c WHERE c.boardId = :boardId")
     List<UUID> findIdsByBoardId(@Param("boardId") UUID boardId);
 
     @Modifying
     @Query("DELETE FROM ColumnEntity c WHERE c.boardId = :boardId")
     void deleteAllByIdIn(@Param("columnIds") List<UUID> columnIds);
+
+    List<ColumnEntity> findByBoardIdOrderByColumnOrderAsc(UUID boardId);
 }

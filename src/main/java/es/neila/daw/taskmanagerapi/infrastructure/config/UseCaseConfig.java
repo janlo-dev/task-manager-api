@@ -4,10 +4,7 @@ import es.neila.daw.taskmanagerapi.application.service.BoardAccessChecker;
 import es.neila.daw.taskmanagerapi.application.usecase.audit.GetAuditLogByEntityUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.audit.GetAuditLogByUserUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.board.*;
-import es.neila.daw.taskmanagerapi.application.usecase.column.ChangeColumnOrderUseCase;
-import es.neila.daw.taskmanagerapi.application.usecase.column.CreateColumnUseCase;
-import es.neila.daw.taskmanagerapi.application.usecase.column.DeleteColumnUseCase;
-import es.neila.daw.taskmanagerapi.application.usecase.column.RenameColumnUseCase;
+import es.neila.daw.taskmanagerapi.application.usecase.column.*;
 import es.neila.daw.taskmanagerapi.application.usecase.task.*;
 import es.neila.daw.taskmanagerapi.application.usecase.user.ChangeUserEmailUseCase;
 import es.neila.daw.taskmanagerapi.application.usecase.task.GetUserAssignedTasksUseCase;
@@ -83,8 +80,8 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public GetBoardsByUserUseCase getBoardsByUserUseCase(BoardRepository boardRepository) {
-        return new GetBoardsByUserUseCase(boardRepository);
+    public GetBoardsByUserUseCase getBoardsByUserUseCase(BoardRepository boardRepository, BoardMemberRepository boardMemberRepository) {
+        return new GetBoardsByUserUseCase(boardRepository, boardMemberRepository);
     }
 
     @Bean
@@ -127,6 +124,11 @@ public class UseCaseConfig {
     @Bean
     public DeleteColumnUseCase deleteColumnUseCase(ColumnRepository columnRepository, DomainEventPublisher eventPublisher, BoardAccessChecker boardAccessChecker) {
         return new DeleteColumnUseCase(columnRepository, eventPublisher, boardAccessChecker);
+    }
+
+    @Bean
+    public GetColumnsByBoardUseCase getColumnsByBoardUseCase(ColumnRepository columnRepository) {
+        return new GetColumnsByBoardUseCase(columnRepository);
     }
 
     // --- User ---

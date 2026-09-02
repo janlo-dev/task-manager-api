@@ -115,7 +115,7 @@ Content-Type: application/json
 Authorization: Bearer {{tokenB}}
 
 {
-  "name": "Pendiente",
+  "name": "En Curso",
   "columnOrder": 0,
   "boardId": "2bc44ed7-5e27-4520-abca-7e89d08b8077"
 }
@@ -141,9 +141,9 @@ Content-Type: application/json
 Authorization: Bearer {{tokenB}}
 
 {
-  "title": "Tarea de Bruno",
-  "description": "Probando permisos de miembro",
-  "columnId": "cd73ac51-ba4b-45b3-8bf9-229ee278671e"
+  "title": "Tarea de Bruno en curso",
+  "description": "tarea en curso por Bruno, creada por Ana",
+  "columnId": "b788dd55-85e5-4268-a18c-ecf7b2ae6708"
 }
 
 > {%

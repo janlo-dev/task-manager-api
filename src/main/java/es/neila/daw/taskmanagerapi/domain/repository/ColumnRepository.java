@@ -10,9 +10,9 @@ public interface ColumnRepository {
 
     Column save(Column colum);
     Optional<Column> findById(UUID id);
-    List<Column> findByBoardId(UUID boardId);
     void delete(UUID id);
 
     List<UUID> findIdsByBoardId(UUID boardId);
     void deleteAllByIds(List<UUID> columnIds);
+    List<Column> findByBoardIdOrderByColumnOrderAsc(UUID boardId);
 }

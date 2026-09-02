@@ -13,4 +13,5 @@ public interface BoardMemberRepository {
     List<BoardMember> findByBoardId(UUID boardId);
     void deleteByBoardIdAndUserId(UUID boardId, UUID userId);
     void deleteByBoardId(UUID boardId);
+    List<BoardMember> findByUserId(UUID userId);
 }

@@ -9,6 +9,7 @@ import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
 import es.neila.daw.taskmanagerapi.domain.repository.BoardRepository;
 import es.neila.daw.taskmanagerapi.domain.repository.ColumnRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -31,8 +32,37 @@ public class ChangeColumnOrderUseCase {
 
         boardAccessChecker.verifyCanEditContent(column.getBoardId(), performedByUserId);
 
-        column.changeOrder(request.newOrder());
+        int oldOrder = column.getColumnOrder();
+        int newOrder = request.newOrder();
 
+        if (oldOrder != newOrder) {
+            List<Column> siblings = columnRepository.findByBoardIdOrderByColumnOrderAsc(column.getBoardId());
+
+            for (Column sibling : siblings) {
+                if (sibling.getId().equals(column.getId())) {
+                    continue; // la propia columna se actualiza aparte, más abajo
+                }
+
+                int siblingOrder = sibling.getColumnOrder();
+
+                if (oldOrder < newOrder) {
+                    // se movió hacia adelante -> las de en medio retroceden
+                    if (siblingOrder > oldOrder && siblingOrder <= newOrder) {
+                        sibling.changeOrder(siblingOrder - 1);
+                        columnRepository.save(sibling);
+                    }
+                } else {
+                    // se movió hacia atrás -> las de en medio avanzan
+                    if (siblingOrder >= newOrder && siblingOrder < oldOrder) {
+                        sibling.changeOrder(siblingOrder + 1);
+                        columnRepository.save(sibling);
+                    }
+                }
+            }
+        }
+
+
+        column.changeOrder(request.newOrder());
         Column updateColumn = columnRepository.save(column);
 
         eventPublisher.publish(new AuditDomainEvent(

@@ -3,11 +3,10 @@ package es.neila.daw.taskmanagerapi.application.usecase.task;
 import es.neila.daw.taskmanagerapi.application.dto.AssignTaskRequest;
 import es.neila.daw.taskmanagerapi.application.service.BoardAccessChecker;
 import es.neila.daw.taskmanagerapi.domain.event.AuditDomainEvent;
-import es.neila.daw.taskmanagerapi.domain.model.Board;
 import es.neila.daw.taskmanagerapi.domain.model.Column;
 import es.neila.daw.taskmanagerapi.domain.model.Task;
 import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
-import es.neila.daw.taskmanagerapi.domain.repository.BoardRepository;
+import es.neila.daw.taskmanagerapi.domain.repository.BoardMemberRepository;
 import es.neila.daw.taskmanagerapi.domain.repository.ColumnRepository;
 import es.neila.daw.taskmanagerapi.domain.repository.TaskRepository;
 import es.neila.daw.taskmanagerapi.domain.repository.UserRepository;
@@ -20,13 +19,15 @@ public class AssignTaskUseCase {
     private final ColumnRepository columnRepository;
     private final BoardAccessChecker boardAccessChecker;
     private final UserRepository userRepository;
+    private final BoardMemberRepository boardMemberRepository;
     private final DomainEventPublisher eventPublisher;
 
-    public AssignTaskUseCase(TaskRepository taskRepository, ColumnRepository columnRepository, BoardAccessChecker boardAccessChecker, UserRepository userRepository, DomainEventPublisher eventPublisher) {
+    public AssignTaskUseCase(TaskRepository taskRepository, ColumnRepository columnRepository, BoardAccessChecker boardAccessChecker, UserRepository userRepository, BoardMemberRepository boardMemberRepository, DomainEventPublisher eventPublisher) {
         this.taskRepository = taskRepository;
         this.columnRepository = columnRepository;
         this.boardAccessChecker = boardAccessChecker;
         this.userRepository = userRepository;
+        this.boardMemberRepository = boardMemberRepository;
         this.eventPublisher = eventPublisher;
     }
 
@@ -41,6 +42,9 @@ public class AssignTaskUseCase {
 
         userRepository.findById(request.assignedUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User to assign not found"));
+
+        boardMemberRepository.findByBoardIdAndUserId(column.getBoardId(), request.assignedUserId())
+                .orElseThrow(() -> new IllegalArgumentException("User is not a member of this board"));
 
         task.assignTo(request.assignedUserId());
         Task savedTask = taskRepository.save(task);

@@ -54,8 +54,8 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public AssignTaskUseCase assignTaskUseCase(TaskRepository taskRepository, ColumnRepository columnRepository, BoardAccessChecker boardAccessChecker, UserRepository userRepository, DomainEventPublisher eventPublisher) {
-        return new AssignTaskUseCase(taskRepository, columnRepository, boardAccessChecker, userRepository, eventPublisher);
+    public AssignTaskUseCase assignTaskUseCase(TaskRepository taskRepository, ColumnRepository columnRepository, BoardAccessChecker boardAccessChecker, UserRepository userRepository, BoardMemberRepository boardMemberRepository, DomainEventPublisher eventPublisher) {
+        return new AssignTaskUseCase(taskRepository, columnRepository, boardAccessChecker, userRepository, boardMemberRepository, eventPublisher);
     }
 
     // --- Board ---
@@ -100,8 +100,8 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public GetBoardMembersUseCase getBoardMembersUseCase(BoardMemberRepository boardMemberRepository) {
-        return new GetBoardMembersUseCase(boardMemberRepository);
+    public GetBoardMembersUseCase getBoardMembersUseCase(BoardMemberRepository boardMemberRepository, UserRepository userRepository, BoardAccessChecker boardAccessChecker) {
+        return new GetBoardMembersUseCase(boardMemberRepository, userRepository, boardAccessChecker);
     }
 
 

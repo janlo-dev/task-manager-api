@@ -1,5 +1,6 @@
 package es.neila.daw.taskmanagerapi.infrastructure.controller;
 
+import es.neila.daw.taskmanagerapi.application.dto.BoardMemberDetailsResponse;
 import es.neila.daw.taskmanagerapi.application.dto.ChangeBoardOrderRequest;
 import es.neila.daw.taskmanagerapi.application.dto.CreateBoardRequest;
 import es.neila.daw.taskmanagerapi.application.dto.InviteBoardMemberRequest;
@@ -88,7 +89,8 @@ public class BoardController {
     }
 
     @GetMapping("/{boardId}/members")
-    public List<BoardMember> getMembers(@PathVariable UUID boardId) {
-        return getBoardMembersUseCase.execute(boardId);
+    public List<BoardMemberDetailsResponse> getMembers(@PathVariable UUID boardId, Authentication authentication) {
+        UUID currentUserId = UUID.fromString(authentication.getName());
+        return getBoardMembersUseCase.execute(boardId, currentUserId);
     }
 }

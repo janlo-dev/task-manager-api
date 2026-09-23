@@ -16,7 +16,7 @@ public class GetTasksByColumnUseCase {
     }
 
     public List<Task> execute(UUID columnId) {
-        return taskRepository.findByColumnId(columnId);
+        return taskRepository.findByColumnIdOrderByCreatedAtAsc(columnId);
     }
 
 }

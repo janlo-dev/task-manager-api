@@ -10,7 +10,7 @@ public interface TaskRepository {
 
     Task save(Task task);
     Optional<Task> findById(UUID id);
-    List<Task> findByColumnId(UUID columnId);
+    List<Task> findByColumnIdOrderByCreatedAtAsc(UUID columnId);
     void delete(UUID id);
     void deleteByColumnIds(List<UUID> columnIds);
     List<Task> findByAssignedUserId(UUID userId);

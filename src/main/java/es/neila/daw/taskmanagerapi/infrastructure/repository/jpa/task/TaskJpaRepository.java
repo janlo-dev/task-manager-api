@@ -11,7 +11,7 @@ import java.util.UUID;
 
 public interface TaskJpaRepository extends JpaRepository<TaskEntity, UUID> {
 
-    List<TaskEntity> findByColumnId(UUID columnId);
+    List<TaskEntity> findByColumnIdOrderByCreatedAtAsc(UUID columnId);
     List<TaskEntity> findByAssignedUserId(UUID userId);
 
     @Modifying

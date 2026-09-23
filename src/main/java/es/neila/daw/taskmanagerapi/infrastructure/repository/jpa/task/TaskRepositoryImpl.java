@@ -35,8 +35,8 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
-    public List<Task> findByColumnId(UUID columnId) {
-        return jpaRepository.findByColumnId(columnId)
+    public List<Task> findByColumnIdOrderByCreatedAtAsc(UUID columnId) {
+        return jpaRepository.findByColumnIdOrderByCreatedAtAsc(columnId)
                 .stream()
                 .map(mapper::toDomain)
                 .toList();

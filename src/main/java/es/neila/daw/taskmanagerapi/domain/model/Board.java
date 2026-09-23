@@ -1,5 +1,7 @@
 package es.neila.daw.taskmanagerapi.domain.model;
 
+import es.neila.daw.taskmanagerapi.domain.exception.UnauthorizedActionException;
+
 import java.util.UUID;
 
 public class Board {
@@ -40,7 +42,7 @@ public class Board {
 
     public void verifyCanManage(UUID requesterId) {
         if (!this.userId.equals(requesterId)) {
-            throw new IllegalArgumentException("Only the board owner can perform this action");
+            throw new UnauthorizedActionException("Only the board owner can perform this action");
         }
     }
 

@@ -1,5 +1,6 @@
 package es.neila.daw.taskmanagerapi.application.service;
 
+import es.neila.daw.taskmanagerapi.domain.exception.UnauthorizedActionException;
 import es.neila.daw.taskmanagerapi.domain.repository.BoardMemberRepository;
 
 import java.util.UUID;
@@ -14,6 +15,6 @@ public class BoardAccessChecker {
 
     public void verifyCanEditContent(UUID boardId, UUID userId) {
         boardMemberRepository.findByBoardIdAndUserId(boardId, userId)
-                .orElseThrow(() -> new IllegalArgumentException("You don't have access to this board"));
+                .orElseThrow(() -> new UnauthorizedActionException("You don't have access to this board"));
     }
 }

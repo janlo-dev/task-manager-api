@@ -1,6 +1,7 @@
 package es.neila.daw.taskmanagerapi.infrastructure.listener;
 
 import es.neila.daw.taskmanagerapi.domain.event.BoardDeletedEvent;
+import es.neila.daw.taskmanagerapi.domain.repository.BoardMemberRepository;
 import es.neila.daw.taskmanagerapi.domain.repository.ColumnRepository;
 import es.neila.daw.taskmanagerapi.domain.repository.TaskRepository;
 import org.springframework.context.event.EventListener;
@@ -15,10 +16,13 @@ public class CascadeDeleteBoardListener {
 
     private final ColumnRepository columnRepository;
     private final TaskRepository taskRepository;
+    private final BoardMemberRepository boardMemberRepository;
 
-    public CascadeDeleteBoardListener(ColumnRepository columnRepository, TaskRepository taskRepository) {
+    public CascadeDeleteBoardListener(ColumnRepository columnRepository, TaskRepository taskRepository,
+                                       BoardMemberRepository boardMemberRepository) {
         this.columnRepository = columnRepository;
         this.taskRepository = taskRepository;
+        this.boardMemberRepository = boardMemberRepository;
     }
 
     @EventListener
@@ -34,5 +38,8 @@ public class CascadeDeleteBoardListener {
             // 3. Borrar las columnas
             columnRepository.deleteAllByIds(columnIds);
         }
+
+        // 4. Borrar las membresías del tablero
+        boardMemberRepository.deleteByBoardId(event.boardId());
     }
 }

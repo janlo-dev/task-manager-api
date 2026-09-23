@@ -14,7 +14,7 @@ public interface ColumnJpaRepository extends JpaRepository<ColumnEntity, UUID> {
     List<UUID> findIdsByBoardId(@Param("boardId") UUID boardId);
 
     @Modifying
-    @Query("DELETE FROM ColumnEntity c WHERE c.boardId = :boardId")
+    @Query("DELETE FROM ColumnEntity c WHERE c.id IN :columnIds")
     void deleteAllByIdIn(@Param("columnIds") List<UUID> columnIds);
 
     List<ColumnEntity> findByBoardIdOrderByColumnOrderAsc(UUID boardId);

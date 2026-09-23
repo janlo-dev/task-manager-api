@@ -5,6 +5,7 @@ import es.neila.daw.taskmanagerapi.domain.repository.TaskRepository;
 import es.neila.daw.taskmanagerapi.infrastructure.mapper.TaskMapper;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -49,6 +50,11 @@ public class TaskRepositoryImpl implements TaskRepository {
     @Override
     public void deleteByColumnIds(List<UUID> columnIds) {
         jpaRepository.deleteByColumnIdIn(columnIds);
+    }
+
+    @Override
+    public void unassignByColumnIdsAndUserId(List<UUID> columnIds, UUID userId) {
+        jpaRepository.unassignByColumnIdInAndAssignedUserId(columnIds, userId, LocalDateTime.now());
     }
 
     @Override

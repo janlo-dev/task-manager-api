@@ -14,4 +14,5 @@ public interface TaskRepository {
     void delete(UUID id);
     void deleteByColumnIds(List<UUID> columnIds);
     List<Task> findByAssignedUserId(UUID userId);
+    void unassignByColumnIdsAndUserId(List<UUID> columnIds, UUID userId);
 }

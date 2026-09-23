@@ -4,6 +4,7 @@ import es.neila.daw.taskmanagerapi.domain.model.BoardMember;
 import es.neila.daw.taskmanagerapi.domain.repository.BoardMemberRepository;
 import es.neila.daw.taskmanagerapi.infrastructure.mapper.BoardMemberMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,11 +42,13 @@ public class BoardMemberRepositoryImpl implements BoardMemberRepository {
     }
 
     @Override
+    @Transactional
     public void deleteByBoardIdAndUserId(UUID boardId, UUID userId) {
         jpaRepository.deleteByBoardIdAndUserId(boardId, userId);
     }
 
     @Override
+    @Transactional
     public void deleteByBoardId(UUID boardId) {
         jpaRepository.deleteByBoardId(boardId);
     }

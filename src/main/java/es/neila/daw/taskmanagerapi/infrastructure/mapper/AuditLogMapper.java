@@ -16,6 +16,7 @@ public class AuditLogMapper {
                 entity.getId(),
                 entity.getEntityId(),
                 entity.getEntityType(),
+                entity.getBoardId(),
                 entity.getAction(),
                 entity.getPerformedBy(),
                 entity.getDetails(),
@@ -32,6 +33,7 @@ public class AuditLogMapper {
         entity.setId(domain.id());
         entity.setEntityId(domain.entityId());
         entity.setEntityType(domain.entityType());
+        entity.setBoardId(domain.boardId());
         entity.setAction(domain.action());
         entity.setPerformedBy(domain.performedBy());
         entity.setDetails(domain.details());

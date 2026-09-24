@@ -40,6 +40,7 @@ public class CreateColumnUseCase {
         eventPublisher.publish(new AuditDomainEvent(
                 saveColumn.getId(),
                 "COLUMN",
+                saveColumn.getBoardId(),
                 "CREATED",
                 performedByUserId,
                 "Column created with name: " + saveColumn.getName()

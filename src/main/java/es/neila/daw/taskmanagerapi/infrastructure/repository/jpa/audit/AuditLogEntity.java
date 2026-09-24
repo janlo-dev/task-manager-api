@@ -17,6 +17,7 @@ public class AuditLogEntity {
     private UUID id;
     private UUID entityId;
     private String entityType;
+    private UUID boardId;
     private String action;
     private UUID performedBy;
     private String details;

@@ -43,7 +43,8 @@ public class RenameTaskUseCase {
         eventPublisher.publish(new AuditDomainEvent(
                 renameTask.getId(),
                 "TASK",
-                "UPDATE",
+                column.getBoardId(),
+                "RENAMED",
                 performedByUserId,
                 "Task UPDATE with NAME: " + renameTask.getTitle()
         ));

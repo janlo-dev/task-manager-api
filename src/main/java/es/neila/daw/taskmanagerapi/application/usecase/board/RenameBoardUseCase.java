@@ -31,6 +31,7 @@ public class RenameBoardUseCase {
         eventPublisher.publish(new AuditDomainEvent(
                 savedBoard.getId(),
                 "BOARD",
+                savedBoard.getId(),
                 "RENAMED",
                 performedByUserId,
                 "Board update with name: " + savedBoard.getName()

@@ -68,6 +68,7 @@ public class ChangeColumnOrderUseCase {
         eventPublisher.publish(new AuditDomainEvent(
                 updateColumn.getId(),
                 "COLUMN",
+                updateColumn.getBoardId(),
                 "REORDERED",
                 performedByUserId,
                 "Column order change to: " + updateColumn.getColumnOrder()

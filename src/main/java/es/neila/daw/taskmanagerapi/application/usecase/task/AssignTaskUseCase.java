@@ -52,6 +52,7 @@ public class AssignTaskUseCase {
         eventPublisher.publish(new AuditDomainEvent(
                 savedTask.getId(),
                 "TASK",
+                column.getBoardId(),
                 "ASSIGNED",
                 performedByUserId,
                 "Task assigned to user: " + request.assignedUserId()

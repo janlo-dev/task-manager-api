@@ -18,9 +18,16 @@ public class ChangeUserEmailUseCase {
         this.eventPublisher = eventPublisher;
     }
 
+    // Solo se puede cambiar el email del usuario autenticado
     public User execute(ChangeUserEmailRequest request, UUID performedByUserId) {
-        User user = userRepository.findById(request.userId())
+        User user = userRepository.findById(performedByUserId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        userRepository.findByEmail(request.newEmail())
+                .filter(existing -> !existing.getId().equals(user.getId()))
+                .ifPresent(existing -> {
+                    throw new IllegalArgumentException("Email already in use");
+                });
 
         user.changeEmail(request.newEmail());
 
@@ -29,6 +36,7 @@ public class ChangeUserEmailUseCase {
         eventPublisher.publish(new AuditDomainEvent(
                 updateUser.getId(),
                 "USER",
+                null,
                 "EMAIL_CHANGED",
                 performedByUserId,
                 "User email changed to: " + updateUser.getEmail()

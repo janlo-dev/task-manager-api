@@ -37,6 +37,7 @@ public class DeleteColumnUseCase {
         eventPublisher.publish(new AuditDomainEvent(
                 columnId,
                 "COLUMN",
+                column.getBoardId(),
                 "DELETED",
                 performedByUserId,
                 "Column deleted: " + column.getName()

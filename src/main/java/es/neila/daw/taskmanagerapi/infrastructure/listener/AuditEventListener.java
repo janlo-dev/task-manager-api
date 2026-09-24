@@ -23,6 +23,7 @@ public class AuditEventListener {
                 UUID.randomUUID(),
                 event.entityId(),
                 event.entityType(),
+                event.boardId(),
                 event.action(),
                 event.performedBy(),
                 event.details(),

@@ -43,7 +43,8 @@ public class CreateBoardUseCase {
 
         eventPublisher.publish(new AuditDomainEvent(
                 savedBoard.getId(),
-                "Board",
+                "BOARD",
+                savedBoard.getId(),
                 "CREATED",
                 userId,
                 "Board created with name: " + savedBoard.getName()

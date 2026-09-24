@@ -48,6 +48,7 @@ public class CreateTaskUseCase {
         eventPublisher.publish(new AuditDomainEvent(
                 savedTask.getId(),
                 "TASK",
+                column.getBoardId(),
                 "CREATED",
                 performedByUserId,
                 "Task created with title: " + savedTask.getTitle()

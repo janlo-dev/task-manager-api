@@ -6,13 +6,14 @@ import java.util.UUID;
 public record AuditDomainEvent(
 
         UUID entityId,
-        String entityType, // "TASK", "BOARD", "COLUMN"
+        String entityType, // "TASK", "BOARD", "COLUMN", "USER"
+        UUID boardId,      // board al que pertenece la entidad (null en eventos de USER)
         String action,     // "MOVED", "RENAMED", "DELETED", "CREATED"
         UUID performedBy,
         String details,
         LocalDateTime timestamp
 ) {
-    public AuditDomainEvent(UUID entityId, String entityType, String action, UUID performedBy, String details) {
-        this(entityId, entityType, action, performedBy, details, LocalDateTime.now());
+    public AuditDomainEvent(UUID entityId, String entityType, UUID boardId, String action, UUID performedBy, String details) {
+        this(entityId, entityType, boardId, action, performedBy, details, LocalDateTime.now());
     }
 }

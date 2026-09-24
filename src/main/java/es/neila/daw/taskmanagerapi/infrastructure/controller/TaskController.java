@@ -40,8 +40,9 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getByColumn(@RequestParam UUID columnId) {
-        return getTasksByColumnUseCase.execute(columnId);
+    public List<Task> getByColumn(@RequestParam UUID columnId, Authentication authentication) {
+        UUID currentUserId = UUID.fromString(authentication.getName());
+        return getTasksByColumnUseCase.execute(columnId, currentUserId);
     }
 
     @PutMapping("/rename")

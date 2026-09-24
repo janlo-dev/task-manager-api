@@ -52,6 +52,7 @@ public class InviteBoardMemberUseCase {
         eventPublisher.publish(new AuditDomainEvent(
                 request.boardId(),
                 "BOARD",
+                request.boardId(),
                 "MEMBER_ADDED",
                 performedBy,
                 "User invited to board: " + invitedUser.getEmail()

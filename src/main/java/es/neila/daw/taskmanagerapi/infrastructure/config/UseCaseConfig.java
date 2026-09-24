@@ -37,8 +37,8 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public GetTasksByColumnUseCase getTasksByColumnUseCase(TaskRepository taskRepository) {
-        return new GetTasksByColumnUseCase(taskRepository);
+    public GetTasksByColumnUseCase getTasksByColumnUseCase(TaskRepository taskRepository, ColumnRepository columnRepository, BoardAccessChecker boardAccessChecker) {
+        return new GetTasksByColumnUseCase(taskRepository, columnRepository, boardAccessChecker);
     }
 
     @Bean
@@ -127,8 +127,8 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public GetColumnsByBoardUseCase getColumnsByBoardUseCase(ColumnRepository columnRepository) {
-        return new GetColumnsByBoardUseCase(columnRepository);
+    public GetColumnsByBoardUseCase getColumnsByBoardUseCase(ColumnRepository columnRepository, BoardAccessChecker boardAccessChecker) {
+        return new GetColumnsByBoardUseCase(columnRepository, boardAccessChecker);
     }
 
     // --- User ---
@@ -149,8 +149,8 @@ public class UseCaseConfig {
 
     // --- Audit ---
     @Bean
-    public GetAuditLogByEntityUseCase getAuditLogByEntityUseCase(AuditLogRepository auditLogRepository) {
-        return new GetAuditLogByEntityUseCase(auditLogRepository);
+    public GetAuditLogByEntityUseCase getAuditLogByEntityUseCase(AuditLogRepository auditLogRepository, BoardAccessChecker boardAccessChecker) {
+        return new GetAuditLogByEntityUseCase(auditLogRepository, boardAccessChecker);
     }
 
     @Bean

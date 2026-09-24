@@ -42,6 +42,7 @@ public class DeleteTaskUseCase {
         eventPublisher.publish(new AuditDomainEvent(
                 taskId,
                 "TASK",
+                column.getBoardId(),
                 "DELETED",
                 performedByUserId,
                 "Task deleted successfully"

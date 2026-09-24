@@ -18,8 +18,9 @@ public class RenameUserUseCase {
         this.eventPublisher = eventPublisher;
     }
 
+    // Solo se puede renombrar al usuario autenticado
     public User execute(RenameUserRequest request, UUID performedByUserId) {
-        User user = userRepository.findById(request.userId())
+        User user = userRepository.findById(performedByUserId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         user.rename(request.newName());
@@ -29,6 +30,7 @@ public class RenameUserUseCase {
         eventPublisher.publish(new AuditDomainEvent(
                 updateUser.getId(),
                 "USER",
+                null,
                 "RENAMED",
                 performedByUserId,
                 "User rename to: " + updateUser.getName()

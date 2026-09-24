@@ -38,6 +38,7 @@ public class RemoveBoardMemberUseCase {
         eventPublisher.publish(new AuditDomainEvent(
                 boardId,
                 "BOARD",
+                boardId,
                 "MEMBER_REMOVED",
                 performedBy,
                 "User removed from board: " + memberUserId

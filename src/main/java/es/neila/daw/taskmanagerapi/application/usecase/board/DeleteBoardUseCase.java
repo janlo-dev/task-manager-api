@@ -31,6 +31,7 @@ public class DeleteBoardUseCase {
         eventPublisher.publish(new AuditDomainEvent(
                 boardId,
                 "BOARD",
+                boardId,
                 "DELETED",
                 performedByUserId,
                 "Board deleted: " + board.getName()

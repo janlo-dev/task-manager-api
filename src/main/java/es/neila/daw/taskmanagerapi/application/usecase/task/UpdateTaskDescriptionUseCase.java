@@ -43,6 +43,7 @@ public class UpdateTaskDescriptionUseCase {
         eventPublisher.publish(new AuditDomainEvent(
                 updateTask.getId(),
                 "TASK",
+                currentColumn.getBoardId(),
                 "UPDATE",
                 performedByUserId,
                 "Task update with description: " + updateTask.getDescription()

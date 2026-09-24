@@ -3,11 +3,9 @@ package es.neila.daw.taskmanagerapi.application.usecase.task;
 import es.neila.daw.taskmanagerapi.application.dto.MoveTaskRequest;
 import es.neila.daw.taskmanagerapi.application.service.BoardAccessChecker;
 import es.neila.daw.taskmanagerapi.domain.event.AuditDomainEvent;
-import es.neila.daw.taskmanagerapi.domain.model.Board;
 import es.neila.daw.taskmanagerapi.domain.model.Column;
 import es.neila.daw.taskmanagerapi.domain.model.Task;
 import es.neila.daw.taskmanagerapi.domain.port.DomainEventPublisher;
-import es.neila.daw.taskmanagerapi.domain.repository.BoardRepository;
 import es.neila.daw.taskmanagerapi.domain.repository.ColumnRepository;
 import es.neila.daw.taskmanagerapi.domain.repository.TaskRepository;
 
@@ -36,18 +34,26 @@ public class MoveTaskUseCase {
         Column currentColumn = columnRepository.findById(task.getColumnId())
                 .orElseThrow(() -> new IllegalArgumentException("Column not found"));
 
-
         boardAccessChecker.verifyCanEditContent(currentColumn.getBoardId(), performedByUserId);
 
-        task.moveToColumn(request.newColumnId());
+        // Solo se puede mover dentro del mismo board (el acceso ya está comprobado arriba)
+        Column destinationColumn = columnRepository.findById(request.newColumnId())
+                .orElseThrow(() -> new IllegalArgumentException("Destination column not found"));
+
+        if (!destinationColumn.getBoardId().equals(currentColumn.getBoardId())) {
+            throw new IllegalArgumentException("Cannot move a task to a column of another board");
+        }
+
+        task.moveToColumn(destinationColumn.getId());
         Task updatedTask = taskRepository.save(task);
 
         eventPublisher.publish(new AuditDomainEvent(
                 updatedTask.getId(),
                 "TASK",
+                currentColumn.getBoardId(),
                 "MOVED",
                 performedByUserId,
-                "Task moved to column " + request.newColumnId()
+                "Task moved to column " + destinationColumn.getId()
         ));
 
         return updatedTask;

@@ -57,7 +57,8 @@ public class ColumnController {
     }
 
     @GetMapping("/board/{boardId}")
-    public List<Column> getByBoard(@PathVariable UUID boardId) {
-        return getColumnsByBoardUseCase.execute(boardId);
+    public List<Column> getByBoard(@PathVariable UUID boardId, Authentication authentication) {
+        UUID currentUserId = UUID.fromString(authentication.getName());
+        return getColumnsByBoardUseCase.execute(boardId, currentUserId);
     }
 }

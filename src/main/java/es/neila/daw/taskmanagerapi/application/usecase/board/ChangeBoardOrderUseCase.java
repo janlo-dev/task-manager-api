@@ -31,6 +31,7 @@ public class ChangeBoardOrderUseCase {
         eventPublisher.publish(new AuditDomainEvent(
                 updateBoard.getId(),
                 "BOARD",
+                updateBoard.getId(),
                 "REORDERED",
                 performedByUserId,
                 "Board order changed to: " + updateBoard.getBoardOrder()

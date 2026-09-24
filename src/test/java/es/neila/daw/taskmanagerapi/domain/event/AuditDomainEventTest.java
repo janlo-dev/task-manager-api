@@ -12,14 +12,16 @@ class AuditDomainEventTest {
     @Test
     void constructorWithoutTimestamp_setsTimestampToNow() {
         UUID entityId = UUID.randomUUID();
+        UUID boardId = UUID.randomUUID();
         UUID performedBy = UUID.randomUUID();
         LocalDateTime before = LocalDateTime.now();
 
-        AuditDomainEvent event = new AuditDomainEvent(entityId, "TASK", "MOVED", performedBy, "detalle");
+        AuditDomainEvent event = new AuditDomainEvent(entityId, "TASK", boardId, "MOVED", performedBy, "detalle");
 
         LocalDateTime after = LocalDateTime.now();
         assertThat(event.entityId()).isEqualTo(entityId);
         assertThat(event.entityType()).isEqualTo("TASK");
+        assertThat(event.boardId()).isEqualTo(boardId);
         assertThat(event.action()).isEqualTo("MOVED");
         assertThat(event.performedBy()).isEqualTo(performedBy);
         assertThat(event.details()).isEqualTo("detalle");

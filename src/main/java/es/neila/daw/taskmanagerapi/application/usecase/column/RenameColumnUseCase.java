@@ -37,6 +37,7 @@ public class RenameColumnUseCase {
         eventPublisher.publish(new AuditDomainEvent(
                 updateColumn.getId(),
                 "COLUMN",
+                updateColumn.getBoardId(),
                 "RENAMED",
                 performedByUserId,
                 "Column update with name: " + updateColumn.getName()

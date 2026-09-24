@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bienvenido a Task Manager</title>
+</head>
+<!-- Plantilla de email: tablas y estilos en línea porque los clientes de correo ignoran casi todo el CSS -->
+<body style="margin:0; padding:0; background-color:#f4f5f7;">
+  <!-- Texto de vista previa que muestran las bandejas de entrada (oculto en el cuerpo) -->
+  <div style="display:none; max-height:0; overflow:hidden;">
+    Tu cuenta está lista. Empieza a organizar tus tareas.
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f5f7;">
+    <tr>
+      <td align="center" style="padding:32px 16px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+               style="max-width:600px; background-color:#ffffff; border-radius:8px;
+                      font-family:-apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+
+          <!-- Cabecera / logo -->
+          <tr>
+            <td style="padding:28px 40px; border-bottom:1px solid #e6e8eb;">
+              <span style="display:inline-block; width:28px; height:28px; line-height:28px;
+                           text-align:center; border-radius:6px; background-color:#2f6fed;
+                           color:#ffffff; font-weight:700; font-size:15px;">✓</span>
+              <span style="font-size:18px; font-weight:700; color:#1f2328; vertical-align:middle;
+                           padding-left:8px;">Task Manager</span>
+            </td>
+          </tr>
+
+          <!-- Cuerpo -->
+          <tr>
+            <td style="padding:36px 40px 12px; color:#1f2328;">
+              <h1 style="margin:0 0 16px; font-size:22px; font-weight:600;">
+                ¡Hola, <span th:text="${name}">Ana</span>!
+              </h1>
+              <p style="margin:0 0 16px; font-size:15px; line-height:1.6; color:#424a53;">
+                Tu cuenta se ha creado correctamente. Ya puedes iniciar sesión con tu email
+                y contraseña para crear tableros, organizar columnas y repartir tareas con tu equipo.
+              </p>
+              <p style="margin:0 0 28px; font-size:15px; line-height:1.6; color:#424a53;">
+                ¡Gracias por registrarte!
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding:20px 40px 28px; border-top:1px solid #e6e8eb;
+                       font-size:12px; line-height:1.5; color:#8b949e;">
+              Recibes este correo porque se creó una cuenta en Task Manager con esta dirección.
+              Si no has sido tú, puedes ignorarlo.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

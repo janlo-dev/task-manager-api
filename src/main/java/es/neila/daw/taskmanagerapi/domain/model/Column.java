@@ -13,6 +13,9 @@ public class Column {
         if(name == null || name.isBlank()){
             throw  new IllegalArgumentException("Column name cannot be empty");
         }
+        if(columnOrder < 0){
+            throw new IllegalArgumentException("Column columnOrder cannot be negative");
+        }
 
         this.boardId = boardId;
         this.id = id;
@@ -29,7 +32,7 @@ public class Column {
 
     public void changeOrder(int newOrder){
         if(newOrder < 0){
-            throw new IllegalArgumentException("Column boardOrder cannot be negative");
+            throw new IllegalArgumentException("Column columnOrder cannot be negative");
         }
         this.columnOrder = newOrder;
     }

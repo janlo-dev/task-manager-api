@@ -14,17 +14,15 @@ public class Task {
     private UUID columnId;
 
     public Task(UUID id, String title, String description, UUID assignedUserId, UUID columnId) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt  = LocalDateTime.now();
-        this.assignedUserId = assignedUserId;
-        this.columnId = columnId;
+        this(id, title, description, assignedUserId, columnId, LocalDateTime.now(), LocalDateTime.now());
     }
 
     public Task(UUID id, String title, String description, UUID assignedUserId, UUID columnId,
                 LocalDateTime createdAt, LocalDateTime updatedAt) {
+
+        if(title == null || title.isBlank()){
+            throw new IllegalArgumentException("Task title cannot be empty");
+        }
 
         this.id = id;
         this.title = title;

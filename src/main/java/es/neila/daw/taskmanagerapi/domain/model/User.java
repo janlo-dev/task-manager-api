@@ -36,7 +36,7 @@ public class User {
 
     public void changeEmail(String newEmail){
         if(newEmail == null || newEmail.isBlank()){
-            throw new IllegalArgumentException("User emial cannot be empty");
+            throw new IllegalArgumentException("User email cannot be empty");
         }
         this.email = newEmail;
     }
